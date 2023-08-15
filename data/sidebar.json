@@ -1,0 +1,164 @@
+[
+  {
+    "id": "1",
+    "title": "Converes",
+    "slug":"giay-converse",
+    "childrens": [
+      {
+        "id": "1",
+        "title": "Giày Converse chuck",
+        "slug":"giay-converse-chuck"
+      },
+      {
+        "id": "2",
+        "title": "Giày Converse classic",
+        "slug":"giay-converse-classic"
+      },
+      {
+        "id": "3",
+        "title": "Giày Converse cao cổ",
+        "slug":"giay-converse-cao-co"
+      },
+      {
+        "id": "4",
+        "title": "Giày Converse thấp cổ",
+        "slug":"giay-converse-thap-co"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Giày Sneaker",
+    "slug": "giay-sneaker",
+    "childrens": [
+      {
+        "id": "1",
+        "title": "Giày Sneaker low top",
+        "slug": "giay-sneaker-low-top"
+      },
+      {
+        "id": "2",
+        "title": "Giày Sneaker mid top",
+        "slug": "giay-sneaker-mid-top"
+      },
+      {
+        "id": "3",
+        "title": "Giày Sneaker high top",
+        "slug": "giay-sneaker-high-top"
+      },
+      {
+        "id": "4",
+        "title": "Giày Sneaker slip-ons",
+        "slug": "giay-sneaker-slip-ons"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Giày thể thao",
+    "slug": "giay-the-thao",
+    "childrens": [
+      {
+        "id": "1",
+        "title": "Giày đá bóng",
+        "slug": "giay-da-bong"
+      },
+      {
+        "id": "2",
+        "title": "Giày bóng rổ",
+        "slug": "giay-bong-ro"
+      },
+      {
+        "id": "3",
+        "title": "Giày tập luyện đa năng",
+        "slug": "giay-tap-luyen-da-năng"
+      },
+      {
+        "id": "4",
+        "title": "Giày gofl",
+        "slug": "giay-gofl"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Giày boot",
+    "slug":"giay-boot",
+    "childrens": [
+      {
+        "id": "1",
+        "title": "Giày chelsea boot",
+        "slug": "giay-chelsea-boot"
+      },
+      {
+        "id": "2",
+        "title": "Giày chukka boot",
+        "slug": "giay-chukka-boot"
+      },
+      {
+        "id": "3",
+        "title": "Giày press boot",
+        "slug": "giay-press-boot"
+      },
+      {
+        "id": "4",
+        "title": "Giày combat boot",
+        "slug": "giay-combat-boot"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "title": "Giày loafer",
+    "slug":"giay-loafer",
+    "childrens": [
+      {
+        "id": "1",
+        "title": "Giày penny loafer",
+        "slug": "giay-penny-loafer"
+      },
+      {
+        "id": "2",
+        "title": "Giày tassel loafer",
+        "slug": "giay-tassel-loafer"
+      },
+      {
+        "id": "3",
+        "title": "Giày kiltie loafer",
+        "slug": "giay-kiltie-loafer"
+      },
+      {
+        "id": "4",
+        "title": "Giày pump loafer",
+        "slug": "giay-pump-loafer"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "title": "Giày sandal",
+    "slug": "giay-sandal",
+    "childrens": [
+      {
+        "id": "1",
+        "title": "Giày sandal shat",
+        "slug": "giay-sandal-shat"
+      },
+      {
+        "id": "2",
+        "title": "Giày sandal adidas",
+        "slug": "giay-sandal-adidas"
+      },
+      {
+        "id": "3",
+        "title": "Giày sandal 3 quai",
+        "slug": "giay-sandal-3-quai"
+      },
+      {
+        "id": "4",
+        "title": "Giày sandal bitis",
+        "slug": "giay-sandal-bitis"
+      }
+    ]
+  }
+]
