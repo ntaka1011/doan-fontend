@@ -15,6 +15,7 @@ import { useCategory } from "@/hooks/useCategories";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "@/hooks/useSelector";
 import { addCart } from "@/store/cartSlice";
+import { convertPrice } from "@/utils/convertPrice";
 
 interface ModalProps {
   slug: string;
@@ -135,7 +136,7 @@ const Modal: React.FC<ModalProps> = ({ slug }) => {
                 drop-shadow-md
             `}
         >
-          <div className="relative h-full">
+          <div className="relative h-full w-full">
             <div className="p-[30px] w-full object-cover h-full flex gap-[30px]">
               <div className="w-[41.666667%] h-full">
                 <Carousel
@@ -158,7 +159,7 @@ const Modal: React.FC<ModalProps> = ({ slug }) => {
                   <div className="flex items-center pb-[5px] border-b mb-[15px]">
                     <div className="flex items-center">
                       <p className="text-sm font-bold mr-[5px]">Thương hiệu:</p>
-                      <p className="text-sm">{category && category[0].name}</p>
+                      <p className="text-sm">{category && category[0]?.name}</p>
                     </div>
                     <p className="flex justify-center w-4">|</p>
                     <div className="flex items-center">
@@ -173,11 +174,11 @@ const Modal: React.FC<ModalProps> = ({ slug }) => {
                 </div>
                 <div className="flex mb-[15px] items-center">
                   <p className="text-[#35c0c5] font-bold text-[26px] leading-5 mr-[10px]">
-                    {product?.price}₫
+                    {convertPrice(product?.price)}
                   </p>
                   {product?.original_price && (
                     <p className="leading-5 text-[16px] text-slate-500 italic line-through ">
-                      {product?.original_price}₫
+                      {convertPrice(product?.original_price)}
                     </p>
                   )}
                 </div>
@@ -257,7 +258,7 @@ const Modal: React.FC<ModalProps> = ({ slug }) => {
                     {product?.size.map((item: any, index: number) => (
                       <div
                         key={index}
-                        className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] border flex items-center ${
+                        className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] border flex items-center justify-center ${
                           active === index ? "bg-[#35c0c5]" : ""
                         }`}
                         onClick={() => {

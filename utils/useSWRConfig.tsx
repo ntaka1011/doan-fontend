@@ -36,7 +36,7 @@ instance.interceptors.response.use(
   async (error) => {
     const config = error?.config;
 
-    if (error.response && error.response.status === 500 && !config._retry) {
+    if (error.response && error.response.status === 501 && !config._retry) {
       config._retry = true;
 
       const refreshToken = localStorage.getItem("refreshToken");

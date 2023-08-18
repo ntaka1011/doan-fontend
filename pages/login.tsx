@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/hooks/useUser";
@@ -81,6 +81,10 @@ const Login = () => {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (Object.keys(user || {}).length !== 0)
+      router.push('/');
+  }, [router, user])
   return (
     <Wrapper>
       <div className="flex text-sm py-5 px-[15px]">

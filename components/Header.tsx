@@ -12,7 +12,8 @@ import Link from "next/link";
 import { AuthContext } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/useSelector";
 import { useRouter } from "next/router";
-import { deleteCart } from "@/store/cartSlice";
+import { deleteCart, removeAllCart } from "@/store/cartSlice";
+import { convertPrice } from "@/utils/convertPrice";
 
 const Header = () => {
   const [search, setSearch] = useState("");
@@ -55,6 +56,14 @@ const Header = () => {
       })
     );
   };
+
+  const handleTest = () => {
+    dispatch(removeAllCart({
+      uuid: cartItems.map((item) => ({
+        uuid: item.uuid
+      }))
+    }))
+  }
   return (
     <header className="h-[70px] w-full ">
       <Wrapper className="flex items-center h-full">
@@ -110,15 +119,18 @@ const Header = () => {
             </Link>
           )}
 
-          <Link href={"/cart"}>
+          <div>
             <div className="relative  border-r px-5 h-[70px] leading-[70px] z-50 bg-[url('/images/bg-cart.webp')] bg-[#35c0c5] hover:bg-none hover:bg-white group">
-              <div className="flex items-center hover:cursor-pointer group-hover:text-[#35c0c5] group-hover:bg-none group-hover:bg-white">
-                <BsFillCartFill />
-                <span className="px-[5px]">
-                  {cartItems.length >= 1 ? cartItems.length : "0"}
-                </span>
-                Giỏ hàng
-              </div>
+              <Link href={"/cart"}>
+                <div className="flex items-center hover:cursor-pointer group-hover:text-[#35c0c5] group-hover:bg-none group-hover:bg-white">
+                  <BsFillCartFill />
+                  <span className="px-[5px]">
+                    {cartItems.length >= 1 ? cartItems.length : "0"}
+                  </span>
+                  Giỏ hàng
+                </div>
+              </Link>
+
               <div className="hidden z-50 absolute right-0 top-[70px] bg-white shadow-[0_0_15px_-5px_rgba(0,0,0,0.4)] group-hover:md:block hover:md:block">
                 <ul className="min-w-[375px] max-w-[625px] px-6 pt-[15px]">
                   <div className="p-[10px] max-h-[310px] overflow-auto">
@@ -137,7 +149,7 @@ const Header = () => {
                               {item?.cartItem?.title}
                             </p>
                             <p className="mt-[5px] text-[#35c0c5] leading-5">
-                              {item?.oneQuantityPrice}₫
+                              {convertPrice(item?.oneQuantityPrice)}
                             </p>
                             <p className="mt-[5px] leading-5 text-[12px] text-slate-500 italic ">
                               Màu sắc: {item?.color}
@@ -168,7 +180,7 @@ const Header = () => {
                           </span>
                         </div>
                         <div className="py-[15px] leading-10">
-                          <button className="bg-[#35c0c5] w-full uppercase text-white font-bold border border-[#35c0c5] hover:bg-white hover:text-[#35c0c5]">
+                          <button onClick={handleTest} className="bg-[#35c0c5] w-full uppercase text-white font-bold border border-[#35c0c5] hover:bg-white hover:text-[#35c0c5]">
                             Tiến hành thanh toán
                           </button>
                         </div>
@@ -180,7 +192,7 @@ const Header = () => {
                 </ul>
               </div>
             </div>
-          </Link>
+          </div>
         </div>
 
         {/* mobile */}
@@ -196,7 +208,7 @@ const Header = () => {
           </Link>
         </div>
       </Wrapper>
-    </header>
+    </header >
   );
 };
 

@@ -5,24 +5,33 @@ import SidebarItem from "@/components/SidebarItem";
 import Wrapper from "@/components/Wrapper";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
-import { AiOutlineDown } from "react-icons/ai";
 import items from "@/data/sidebar.json";
+import Select from 'react-select';
 import Contact from "@/components/Contact";
 import { useProducts } from "@/hooks/useProduct";
 import { Product } from "@/types/product";
 import { LoadingContext } from "@/context/LoadingContext";
 import Spinner from "@/components/Spinner";
+import optionSort from "@/data/optionSort.json";
+import optionPrice from "@/data/optionPrice.json";
 
 const Category = () => {
-  const { getProducts } = useProducts();
-  const { data: productNew } = getProducts({ new: true });
+  const { getProducts, getProductParams } = useProducts();
+  const { data: productNew } = getProductParams({ new: true });
+  const [sort, setSort] = useState({ sort: "createdAt", order: "asc" });
+  console.log("🚀 ~ file: index.tsx:22 ~ Category ~ sort:", sort)
+  const [price, setPrice] = useState({ min: 1, max: 999999999 });
   const { loading, setOpenLoading, setCloseLoading } =
     useContext(LoadingContext);
   const [paginateSetup, setPaginateSetup] = useState({
     page: 1,
     page_size: 12,
   });
+  const sortArray = Object.values(sort);
   const { data: products, mutate } = getProducts({
+    sort: sortArray.join(),
+    min: price.min,
+    max: price.max,
     limit: paginateSetup.page_size,
     page: paginateSetup.page,
   });
@@ -30,12 +39,11 @@ const Category = () => {
     { list: [], page_count: 0 }
   );
   useEffect(() => {
-    console.log("tee");
     if (Array.isArray(products?.[0].data)) {
       setPaginate({
         list: products?.[0].data,
         page_count: Math.ceil(
-          products[0].metaData[0].totalDocuments / paginateSetup.page_size
+          products[0].metaData[0]?.totalDocuments / paginateSetup.page_size
         ),
       });
     }
@@ -56,6 +64,12 @@ const Category = () => {
       setCloseLoading();
     }
   };
+  const handleChange = (e: any) => {
+    setSort({sort: e.value.sort, order: e.value.order})
+  }
+  const handleChangePrice = (e: any) => {
+    setPrice({min: e.value.min, max: e.value.max})
+  }
   return (
     <>
       {loading ? <Spinner /> : ""}
@@ -79,63 +93,15 @@ const Category = () => {
           <p className="text-base uppercase font-bold mb-[30px]">
             TẤT CẢ SẢN PHẨM
           </p>
-          <div className="flex items-center mb-[30px]">
-            <span className="mr-[6px]">Sắp xếp:</span>
-            <div className="flex border w-[180px]">
-              <div className="pl-5 pr-7 w-full h-[34px] flex items-center justify-between group relative">
-                <span className="text-[13px]">Mặc định</span>
-                <AiOutlineDown className="text-gray-600" size={12} />
-                <div className="hidden absolute top-[34px] left-[-1px] w-[180px] z-20 border bg-white group-hover:block">
-                  <div className=" text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                    Mặc định
-                  </div>
-                  <div className=" text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                    A → Z
-                  </div>
-                  <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                    Z → A
-                  </div>
-                  <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                    Giá tăng dần
-                  </div>
-                  <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                    Giá giảm dần
-                  </div>
-                  <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                    Hàng mới nhất
-                  </div>
-                  <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                    Hàng cũ nhất
-                  </div>
-                </div>
-              </div>
+          <div className="flex items-center justify-between mb-[30px]">
+            <div className="flex items-center">
+              <span className="mr-[6px]">Sắp xếp:</span>
+              <Select onChange={handleChange} defaultValue={optionSort[0]} options={optionSort}/>
             </div>
 
-            <div className="hidden md:flex lg:flex items-center ml-auto">
+            <div className="flex items-center">
               <span className="mr-[6px]">Giá tiền:</span>
-              <div className="flex border w-[180px]">
-                <div className="pl-5 pr-7 w-full h-[34px] flex items-center justify-between group relative">
-                  <span className="text-[13px]">Mặc định</span>
-                  <AiOutlineDown className="text-gray-600" size={12} />
-                  <div className="hidden absolute top-[34px] left-[-1px] w-[180px] z-20 border bg-white group-hover:block">
-                    <div className=" text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                      Dưới 200.000₫
-                    </div>
-                    <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                      200.000₫ - 300.000₫
-                    </div>
-                    <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                      300.000₫ - 400.000₫
-                    </div>
-                    <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                      400.000₫ - 500.000₫
-                    </div>
-                    <div className="text-[13px] pl-5 pr-7 w-full h-[34px] flex items-center border-b hover:cursor-pointer hover:text-[#35c0c5]">
-                      Trên 500.000₫
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Select onChange={handleChangePrice} defaultValue={optionPrice[0]} options={optionPrice}/>
             </div>
           </div>
           <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-[30px] mb-[30px]">
@@ -161,10 +127,9 @@ const Category = () => {
               </div>
             </div>
             <p className="text-base uppercase mb-[30px]">Sản phẩm mới</p>
-            {productNew?.slice(0, 3).map((product: Product, index: number) => (
-              <ProductItem key={index} product={product} />
+            {productNew?.slice(0, 3).map((productItem: any, index: number) => (
+              <ProductItem product={productItem} key={index} />
             ))}
-
             <div className="mb-[30px]">
               <Link href={"/"} className="text-base hover:text-[#35c0c5]">
                 Xem thêm sản phẩm

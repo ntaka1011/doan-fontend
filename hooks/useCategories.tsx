@@ -1,6 +1,6 @@
 import { FindAll, FindOne } from "@/utils/useSWRConfig";
 
-const endPoint = "/categories";
+const endPoint = "/categories"; 
 export const useCategory = () => {
   return {
     getCategory: (slug: string | null, params = {}) =>

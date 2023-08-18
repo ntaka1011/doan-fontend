@@ -2,20 +2,21 @@
 import React, { FC } from "react";
 import Link from "next/link";
 import { Product } from "@/types/product";
+import { convertPrice } from "@/utils/convertPrice";
 
 interface ProductItemMiniProps {
   product: Product;
+  className?: string
 }
 
-const ProductItemMini: FC<ProductItemMiniProps> = ({ product }) => {
+const ProductItemMini: FC<ProductItemMiniProps> = ({ product, className }) => {
   return (
-    <div className="flex mb-[30px] w-full">
+    <div className={`flex mb-[30px] w-full ${className || ""}`}>
       <Link
         href={`/product/${product.slug}`}
         className="inline-block w-auto cursor-pointer"
       >
-        <img
-          src="/images/product2.webp"
+        <img src={`${product?.thumbnail}`}
           alt="product"
           className="min-w-[100px] object-cover object-center"
         />
@@ -29,11 +30,11 @@ const ProductItemMini: FC<ProductItemMiniProps> = ({ product }) => {
         </Link>
         <div className="flex mb-[10px]">
           <p className="text-[#35c0c5] font-bold text-sm leading-5 mr-1">
-            {product?.price}₫
+            {convertPrice(product.price)}
           </p>
           {product?.original_price && (
             <p className="leading-5 text-[12px] text-slate-500 italic line-through ">
-              {product?.original_price}₫
+              {convertPrice(product.original_price)}
             </p>
           )}
         </div>

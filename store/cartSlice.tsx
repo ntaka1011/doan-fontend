@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 interface CartState {
@@ -57,10 +57,18 @@ export const cartSlice = createSlice({
         (item) => item.uuid !== action.payload.uuid
       );
     },
+    removeAllCart: (state, action) => {
+      console.log("🚀 ~ file: cartSlice.tsx:61 ~ state:", current(state))
+      const listCart = action.payload.uuid
+      console.log("🚀 ~ file: cartSlice.tsx:62 ~ listCart:", listCart)
+      state.cartItems = current(state).cartItems?.filter((item) => {
+        return item.uuid === listCart
+      })
+    }
   },
 });
 
-export const { addCart, updateCart, deleteCart } = cartSlice.actions;
+export const { addCart, updateCart, deleteCart, removeAllCart } = cartSlice.actions;
 
 export const selectBookList = (state: RootState) => state.cart.cartItems;
 

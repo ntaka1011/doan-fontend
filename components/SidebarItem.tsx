@@ -14,7 +14,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
       <div className="flex justify-between items-center relative  hover:text-[#35c0c5] hover:cursor-pointer">
         <Link
           href={`/category/${item.slug}`}
-          className="py-[10px] pl-[25px] pr-4 before:border-b before:w-[17px] before:absolute before:top-[20px] before:left-0"
+          className="py-[10px] pl-[25px] pr-4 before:border-b before:w-[17px] before:absolute before:top-[23px] before:left-0"
         >
           {item.title}
         </Link>

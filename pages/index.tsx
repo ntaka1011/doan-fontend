@@ -25,11 +25,11 @@ export default function Home() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/images/slider_1.webp" alt="slider" className="mb-[30px]" />
       {/* lg */}
-      <Wrapper className="hidden md:hidden lg:flex ">
+      <Wrapper className="hidden md:hidden lg:flex gap-[30px] ">
         <div className="w-[25%]">
           <Sidebar />
         </div>
-        <div className="w-[75%] px-[15px]">
+        <div className="w-[75%]">
           <Aside />
         </div>
       </Wrapper>

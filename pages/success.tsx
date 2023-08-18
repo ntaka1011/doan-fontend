@@ -1,6 +1,21 @@
+import { useAppDispatch, useAppSelector } from "@/hooks/useSelector";
+import { removeAllCart } from "@/store/cartSlice";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const Success = () => {
+  const dispatch = useAppDispatch()
+
+  const cartItems = useAppSelector(state => state.cart.cartItems)
+  console.log("🚀 ~ file: success.tsx:10 ~ Success ~ cartItems:", cartItems)
+
+  // useEffect(() => {
+  //   dispatch(removeAllCart({
+  //     uuid: cartItems.map((item) => ({
+  //       uuid: item.uuid
+  //     }))
+  //   }))
+  // },[])
   return (
     <div className=" w-full min-h-[650px] flex items-center">
       <div className="w-[600px] rounded-lg p-5 border border-black mx-auto flex items-center flex-col">

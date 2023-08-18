@@ -10,15 +10,16 @@ import ProductItem from "@/components/ProductItem";
 import { useRouter } from "next/router";
 import { useProducts } from "@/hooks/useProduct";
 import { useCategory } from "@/hooks/useCategories";
-import { Product } from "@/types/product";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "@/hooks/useSelector";
 import { addCart } from "@/store/cartSlice";
 import Spinner from "@/components/Spinner";
 import { LoadingContext } from "@/context/LoadingContext";
+import Slider from "react-slick";
+import { settingRow, settings } from "@/constant/slider";
 
 const Product = () => {
-  const [selectSize, setSelectSize] = useState();
+  const [selectSize, setSelectSize] = useState<number>(6);
   const { loading, setOpenLoading, setCloseLoading } =
     useContext(LoadingContext);
   const router = useRouter();
@@ -27,14 +28,19 @@ const Product = () => {
   const { getProductBySlug, getProducts } = useProducts();
   const { getCategories } = useCategory();
   const { data: product, mutate } = getProductBySlug(String(slugProduct));
+  console.log("🚀 ~ file: [slug].tsx:30 ~ Product ~ product:", product)
 
   const { data: category } = getCategories({ _id: product?.categories[0] });
+  console.log("🚀 ~ file: [slug].tsx:33 ~ Product ~ category:", category)
 
-  const { data: products } = getProducts();
+  const { data: products } = getProducts({
+    categories: category?.[0]?._id
+  });
+  console.log("🚀 ~ file: [slug].tsx:38 ~ Product ~ products:", products)
 
   const [quantity, setQuantity] = useState<number>(1);
   console.log("🚀 ~ file: [slug].tsx:30 ~ Product ~ quantity:", quantity);
-  const [active, setActive] = useState<number>(1);
+  const [active, setActive] = useState<number>(0);
   const [color, setColor] = useState<string>("Chọn màu sắc");
   const images = product?.images;
 
@@ -63,7 +69,7 @@ const Product = () => {
   };
 
   const handleAddProduct = () => {
-    if (quantity < product?.quantity) {
+    if (quantity <= product?.quantity) {
       if (!selectSize) {
         toast.error("Làm ơn hãy chọn size", {
           position: "top-right",
@@ -74,28 +80,41 @@ const Product = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
-        });
+        })
       } else {
-        dispatch(
-          addCart({
-            cartItem: product,
-            uuid: uuidv4(),
-            quantity: quantity,
-            color: color,
-            selectSize,
-            oneQuantityPrice: product?.price,
-          })
-        );
-        toast.success("Sản phẩm đã được thêm vào giỏ hàng", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        if (color === "Chọn màu sắc") {
+          toast.error("Làm ơn hãy chọn màu sắc", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          dispatch(
+            addCart({
+              cartItem: product,
+              uuid: uuidv4(),
+              quantity: quantity,
+              color: color,
+              selectSize,
+              oneQuantityPrice: product?.price,
+            })
+          );
+          toast.success("Sản phẩm đã được thêm vào giỏ hàng", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       }
     } else {
       toast.error(`Sản phẩm chỉ còn lại ${product.quantity}`, {
@@ -131,14 +150,15 @@ const Product = () => {
           <span className="text-[#35c0c5]">{product?.title}</span>
         </div>
       </Wrapper>
-      <Wrapper className="px-[15px]">
-        <div className="block lg:flex w-full">
-          <div className="w-full lg:w-[41.666667%] pr-[15px]">
+      <Wrapper className="px-[15px] h-full">
+        <div className="block lg:flex w-full h-full">
+          <div className="w-full lg:w-[41.666667%] pr-[15px] h-full">
             <Carousel
               infiniteLoop
               showIndicators={false}
               showStatus={false}
               thumbWidth={60}
+              dynamicHeight={false}
               className="productCarousel"
             >
               {images?.map((image: any, index: number) => (
@@ -164,6 +184,11 @@ const Product = () => {
                     ? "Còn hàng"
                     : "Hết hàng"}
                 </p>
+              </div>
+              <p className="flex justify-center w-4">|</p>
+              <div className="flex items-center">
+                <p className="text-sm font-bold mr-[5px]">Đã bán: </p>
+                <p className="text-sm">{product?.selled}</p>
               </div>
             </div>
             <div className="flex mb-[15px] items-center">
@@ -236,10 +261,12 @@ const Product = () => {
                 </div>
                 <div>
                   <button
+                    disabled={!product?.quantity && product?.quantity < 1}
                     onClick={handleAddProduct}
-                    className="px-[25px] h-[45px] bg-[#35c0c5] text-white text-sm border border-[#35c0c5] hover:bg-white hover:text-[#35c0c5]"
+                    className={`px-[25px] h-[45px] bg-[#35c0c5] ${product?.quantity && product?.quantity >= 1 ? "hover:bg-white hover:text-[#35c0c5]" : "opacity-50 cursor-not-allowed" } text-white text-sm border border-[#35c0c5]`}
                   >
-                    Thêm vào giỏ hàng
+                    {product?.quantity && product?.quantity >= 1 ? "Thêm vào giỏ hàng" :  "Hết Hàng"}
+                    
                   </button>
                 </div>
                 <div>
@@ -255,9 +282,8 @@ const Product = () => {
                   {product?.size.map((item: any, index: number) => (
                     <div
                       key={index}
-                      className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] border flex justify-center items-center ${
-                        active === index ? "bg-[#35c0c5]" : ""
-                      }`}
+                      className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] border flex justify-center items-center ${active === index ? "bg-[#35c0c5]" : ""
+                        }`}
                       onClick={() => {
                         setSelectSize(item?.size);
                         updateActive(index);
@@ -282,23 +308,20 @@ const Product = () => {
         <div className="mb-[100px]">
           <ul className="block text-center lg:flex">
             <li
-              className={`py-[10px] px-[30px] uppercase cursor-pointer ${
-                active === 1 ? "active" : ""
-              }`}
+              className={`py-[10px] px-[30px] uppercase cursor-pointer ${active === 1 ? "active" : ""
+                }`}
             >
               Thông tin sản phẩm
             </li>
             <li
-              className={`py-[10px] px-[30px] border uppercase cursor-pointer ${
-                active === 15 ? "active" : ""
-              }`}
+              className={`py-[10px] px-[30px] border uppercase cursor-pointer ${active === 15 ? "active" : ""
+                }`}
             >
               Thanh toán vận chuyển
             </li>
             <li
-              className={`py-[10px] px-[30px] border uppercase cursor-pointer ${
-                active === 16 ? "active" : ""
-              }`}
+              className={`py-[10px] px-[30px] border uppercase cursor-pointer ${active === 16 ? "active" : ""
+                }`}
             >
               Đánh giá sản phẩm
             </li>
@@ -338,9 +361,13 @@ const Product = () => {
           Sản phẩm liên quan
         </Link>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-[30px] mb-[30px]">
-          {products?.slice(0, 4).map((product: Product, index: number) => (
-            <ProductItem key={index} product={product} />
-          ))}
+          {products?.map((productItem: any) =>
+            productItem.data
+              ?.slice(0, 3)
+              .map((pItem: any, index: any) => (
+                <ProductItem product={pItem} key={index} />
+              ))
+          )}
         </div>
       </Wrapper>
     </>

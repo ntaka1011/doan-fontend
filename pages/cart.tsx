@@ -3,6 +3,7 @@ import Wrapper from "@/components/Wrapper";
 import { AuthContext } from "@/context/AuthContext";
 import { LoadingContext } from "@/context/LoadingContext";
 import { useAppSelector } from "@/hooks/useSelector";
+import { convertPrice } from "@/utils/convertPrice";
 import { instance } from "@/utils/useSWRConfig";
 import Link from "next/link";
 import React, { useContext, useEffect } from "react";
@@ -69,7 +70,7 @@ const Cart = () => {
                       Subtotal
                     </div>
                     <div className="text-md md:text-lg font-medium text-black">
-                      {total.toFixed(3)}₫
+                      {convertPrice(total)}
                     </div>
                   </div>
                   <div className="text-sm md:text-md py-5 border-t mt-5">

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { ReactNode, createContext, useEffect, useReducer } from "react";
 
 enum AuthActionKind {
@@ -53,11 +54,21 @@ const authReducer = (state: AuthState, action: AuthAction) => {
 };
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+  const router = useRouter()
   const [state, dispatch] = useReducer(authReducer, INITIAL_STATE);
 
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
+
+  // useEffect(() => {
+  //   if (state.user && state.user.isAdmin === true) {
+  //     router.push("/")
+  //   } else {
+  //     console.log("You're not allowed to authorizations on this")
+
+  //   }
+  // }, [router, state.user])
 
   return (
     <AuthContext.Provider

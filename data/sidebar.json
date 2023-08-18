@@ -2,27 +2,27 @@
   {
     "id": "1",
     "title": "Converes",
-    "slug":"giay-converse",
+    "slug":"giay-converes",
     "childrens": [
       {
         "id": "1",
         "title": "Giày Converse chuck",
-        "slug":"giay-converse-chuck"
+        "slug":"giay-converes-chuck"
       },
       {
         "id": "2",
         "title": "Giày Converse classic",
-        "slug":"giay-converse-classic"
+        "slug":"giay-converes-classic"
       },
       {
         "id": "3",
         "title": "Giày Converse cao cổ",
-        "slug":"giay-converse-cao-co"
+        "slug":"giay-converes-cao-co"
       },
       {
         "id": "4",
         "title": "Giày Converse thấp cổ",
-        "slug":"giay-converse-thap-co"
+        "slug":"giay-converes-thap-co"
       }
     ]
   },

@@ -10,13 +10,18 @@ import New from "./New";
 import { useProducts } from "@/hooks/useProduct";
 import { Product } from "@/types/product";
 import { LoadingContext } from "@/context/LoadingContext";
+import Slider from "react-slick";
+import { settingFeature, settingNew, settings } from "@/constant/slider";
 
 const Aside = () => {
   const { setOpenLoading, setCloseLoading } = useContext(LoadingContext);
-  const { getProducts } = useProducts();
+  const { getProducts, getProductParams } = useProducts();
   const { data: products, mutate } = getProducts();
-  const { data: productNew, mutate: mutateNew } = getProducts({ new: true });
-  const { data: productFeature, mutate: mutateFeature } = getProducts({
+  const { data: productNew, mutate: mutateNew } = getProductParams({
+    new: true,
+  });
+  console.log("🚀 ~ file: Aside.tsx:19 ~ Aside ~ productNew:", productNew);
+  const { data: productFeature, mutate: mutateFeature } = getProductParams({
     feature: true,
   });
 
@@ -35,7 +40,7 @@ const Aside = () => {
     }
   };
   return (
-    <div className="w-full">
+    <div className=" w-full">
       <div className="p-[15px] block lg:hidden md:hidden">
         <Contact />
       </div>
@@ -49,69 +54,58 @@ const Aside = () => {
           ))}
         </div>
       </div>
-      <Link
-        href={"/"}
-        className="text-center mb-[30px] hover:text-[#35c0c5] hover:cursor-pointer relative w-full px-5 text-lg font-bold uppercase flex justify-center pb-5 before:absolute before:w-full before:h-[1px] before:left-0 before:bg-[#ebebeb] before:z-999 before:top-[35px] border-b border-[#ebebeb]"
-      >
-        Sản phẩm mới
-      </Link>
-      <div className="hidden lg:grid md:grid lg:grid-cols-3 md:grid-cols-3 gap-[30px] mb-[30px]">
-        {productNew?.map((productItem: any) =>
-          productItem.data
-            ?.slice(0, 3)
-            .map((pItem: Product, index: any) => (
-              <ProductItem product={pItem} key={index} />
-            ))
-        )}
+      <div className="relative">
+        <Link
+          href={"/"}
+          className="text-center mb-[30px]  relative w-full px-5 text-lg font-bold uppercase flex pb-5 before:absolute before:w-full before:h-[1px] before:left-0 before:bg-[#ebebeb] before:z-999 before:top-[35px] border-b border-[#ebebeb]"
+        >
+          <span className="hover:text-[#35c0c5] hover:cursor-pointer">
+            Sản phẩm mới
+          </span>
+        </Link>
+        <Slider {...settings}>
+          {productNew?.map((productItem: any, index: number) => (
+            <ProductItem
+              className={"mb-[30px] mx-[15px]"}
+              product={productItem}
+              key={index}
+            />
+          ))}
+        </Slider>
       </div>
-      <div className="grid grid-cols-1 lg:hidden md:hidden lg:grid-cols-3 md:grid-cols-3 gap-[30px] mb-[30px]">
-        {productNew?.map((productItem: any) =>
-          productItem.data
-            ?.slice(0, 3)
-            .map((pItem: Product, index: any) => (
-              <ProductItem product={pItem} key={index} />
-            ))
-        )}
-      </div>
-      <div className="w-full mb-[30px]">
-        <div className="group relative">
+      <div className="mx-[15px] w-full mb-[30px]">
+        <div className=" group relative">
           <img src="/images/banner1.webp" className="" alt="" />
-          <div className="transition-all ease-out duration-300 group-hover:absolute group-hover:top-[10px] group-hover:left-[10px] group-hover:right-[10px] group-hover:bottom-[10px] group-hover:border-2 group-hover:border-white group-hover:scale-100">
+          <div className=" ease-out group-hover:absolute group-hover:top-[10px] group-hover:left-[10px] group-hover:right-[10px] group-hover:bottom-[10px] group-hover:border-2 group-hover:border-white group-hover:scale-100">
             <span className="text-[32px] absolute hidden text-white font-semibold top-[50px] left-[36%] uppercase group-hover:block">
               Hàng mới về
             </span>
           </div>
         </div>
       </div>
-      <Link
-        href={"/"}
-        className="text-center mb-[30px] hover:text-[#35c0c5] hover:cursor-pointer relative w-full px-5 text-lg font-bold uppercase flex justify-center pb-5 before:absolute before:w-full before:h-[1px] before:left-0 before:bg-[#ebebeb] before:z-999 before:top-[35px] border-b border-[#ebebeb]"
-      >
-        Sản phẩm khuyến mại
-      </Link>
-      {/* chưa xong */}
-      <div className="hidden lg:grid md:grid lg:grid-cols-3 md:grid-cols-3 gap-[30px] mb-[30px]">
-        {productNew?.map((productItem: any) =>
-          productItem.data
-            ?.slice(0, 3)
-            .map((pItem: Product, index: any) => (
-              <ProductItem product={pItem} key={index} />
-            ))
-        )}
+      <div className="relative">
+        <Link
+          href={"/"}
+          className="text-center mb-[30px]  relative w-full px-5 text-lg font-bold uppercase flex pb-5 before:absolute before:w-full before:h-[1px] before:left-0 before:bg-[#ebebeb] before:z-999 before:top-[35px] border-b border-[#ebebeb]"
+        >
+          <span className="hover:text-[#35c0c5] hover:cursor-pointer">
+            Sản phẩm khuyến mãi
+          </span>
+        </Link>
+        <Slider {...settings}>
+          {productFeature?.map((productItem: any, index: number) => (
+            <ProductItem
+              className={"mb-[30px] px-[15px]"}
+              product={productItem}
+              key={index}
+            />
+          ))}
+        </Slider>
       </div>
-      <div className="grid grid-cols-1 lg:hidden md:hidden lg:grid-cols-3 md:grid-cols-3 gap-[30px] mb-[30px]">
-        {productNew?.map((productItem: any) =>
-          productItem.data
-            ?.slice(0, 3)
-            .map((pItem: Product, index: any) => (
-              <ProductItem product={pItem} key={index} />
-            ))
-        )}
-      </div>
-      <div className="w-full mb-[30px]">
+      <div className="mx-[15px] w-full mb-[30px]">
         <div className="group relative">
           <img src="/images/banner2.webp" className="" alt="" />
-          <div className="transition-all ease-out duration-300 group-hover:absolute group-hover:top-[10px] group-hover:left-[10px] group-hover:right-[10px] group-hover:bottom-[10px] group-hover:border-2 group-hover:border-white group-hover:scale-100">
+          <div className="ease-out group-hover:absolute group-hover:top-[10px] group-hover:left-[10px] group-hover:right-[10px] group-hover:bottom-[10px] group-hover:border-2 group-hover:border-white group-hover:scale-100">
             <span className="text-[32px] absolute hidden text-white font-semibold top-[50px] left-[36%] uppercase group-hover:block">
               Hàng mới về
             </span>
@@ -121,40 +115,44 @@ const Aside = () => {
       <div className="block w-full md:block lg:flex ">
         {/* lg */}
         <div className="block md:block md:w-full lg:block lg:w-[33.333333%] px-[15px]">
-          <Link
-            href={"/"}
-            className="text-center mb-[30px] hover:text-[#35c0c5] hover:cursor-pointer relative w-full px-5 text-lg font-bold uppercase flex justify-center pb-5 before:absolute before:w-full before:h-[1px] before:left-0 before:bg-[#ebebeb] before:z-999 before:top-[35px] border-b border-[#ebebeb]"
-          >
-            Sản phẩm nổi bật
-          </Link>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:gap-[30px] mb-[30px]">
-            {/* feature */}
-            {productFeature?.map((productItem: any) =>
-              productItem.data
-                ?.slice(0, 1)
-                .map((pItem: Product, index: any) => (
-                  <ProductItemMini product={pItem} key={index} />
-                ))
-            )}
+          <div className="relative">
+            <Link
+              href={"/"}
+              className="text-center mb-[30px] hover:text-[#35c0c5] hover:cursor-pointer relative w-full px-5 text-lg font-bold uppercase flex justify-center pb-5 before:absolute before:w-full before:h-[1px] before:left-0 before:bg-[#ebebeb] before:z-999 before:top-[35px] border-b border-[#ebebeb]"
+            >
+              Sản phẩm nổi bật
+            </Link>
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 md:gap-[30px] mb-[30px]">
+              {/* feature */}
+              <Slider {...settingFeature}>
+                {productFeature?.map((productItem: any, index: number) => (
+                    <ProductItem className={"mb-[30px] px-[15px]"} product={productItem} key={index} />
+                  ))}
+              </Slider>
+            </div>
           </div>
         </div>
         {/* lg */}
         <div className="block md:block md:w-full lg:block lg:w-[66.666667%] px-[15px]">
-          <Link
-            href={"/"}
-            className="text-center mb-[30px] hover:text-[#35c0c5] hover:cursor-pointer relative w-full px-5 text-lg font-bold uppercase flex justify-center pb-5 before:absolute before:w-full before:h-[1px] before:left-0 before:bg-[#ebebeb] before:z-999 before:top-[35px] border-b border-[#ebebeb]"
-          >
-            Sản phẩm mua nhiều
-          </Link>
-          {/* chưa xong */}
-          <div className="hidden md:grid lg:grid grid-cols-2 mb-[30px] gap-[10px] border-b border-[#ebebeb]">
-            {productNew?.map((productItem: any) =>
-              productItem.data
-                ?.slice(0, 3)
-                .map((pItem: Product, index: any) => (
-                  <ProductItemMini product={pItem} key={index} />
-                ))
-            )}
+          <div className="relative">
+            <Link
+              href={"/"}
+              className="text-center mb-[30px] hover:text-[#35c0c5] hover:cursor-pointer relative w-full px-5 text-lg font-bold uppercase flex justify-center pb-5 before:absolute before:w-full before:h-[1px] before:left-0 before:bg-[#ebebeb] before:z-999 before:top-[35px] border-b border-[#ebebeb]"
+            >
+              Sản phẩm mua nhiều
+            </Link>
+            {/* chưa xong */}
+            <div className="hidden md:grid lg:grid grid-cols-1 mb-[30px]">
+              <Slider {...settingNew}>
+                {productNew?.map((productItem: any, index: number) => (
+                  <ProductItemMini
+                    className="pb-5 last:border-none border-b border-[#ebebeb] mb-[30px] px-[15px] "
+                    product={productItem}
+                    key={index}
+                  />
+                ))}
+              </Slider>
+            </div>
           </div>
         </div>
         {/* md */}

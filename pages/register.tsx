@@ -1,6 +1,6 @@
 import Wrapper from "@/components/Wrapper";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +10,7 @@ import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/router";
 import Spinner from "@/components/Spinner";
 import { LoadingContext } from "@/context/LoadingContext";
+import { AuthContext } from "@/context/AuthContext";
 
 interface RegisterProps {
   email: string;
@@ -20,6 +21,7 @@ interface RegisterProps {
 }
 const Register = () => {
   const route = useRouter();
+  const { user, dispatch } = useContext(AuthContext);
   const { createUser } = useUser();
   const phoneRegExp = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
   const validationSchema = Yup.object().shape({
@@ -91,6 +93,10 @@ const Register = () => {
       });
     }
   };
+  useEffect(() => {
+    if (Object.keys(user).length !== 0)
+      route.push('/');
+  }, [route, user])
   return (
     <Wrapper>
       {loading ? <Spinner /> : ""}

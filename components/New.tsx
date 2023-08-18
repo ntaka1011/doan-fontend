@@ -12,6 +12,7 @@ const New: React.FC<NewProps> = ({ show = true }) => {
   var settings = {
     infinite: true,
     speed: 500,
+    arrows: false,
     slidesToShow: show ? 2 : 1,
     slidesToScroll: show ? 2 : 1,
     autoplaySpeed: 2000,

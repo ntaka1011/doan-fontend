@@ -1,0 +1,7 @@
+[
+  { "value": { "sort": "createdAt", "order": "asc" }, "label": "Mặc định" },
+  { "value": { "sort": "title", "order": "asc" }, "label": "A → Z" },
+  { "value":{ "sort": "title", "order": "desc" }, "label": "Z → A" },
+  { "value":{ "sort": "price", "order": "desc" },"label": "Giá tăng dần" },
+  { "value": { "sort": "price", "order": "asc" },"label": "Giá giảm dần" }
+]

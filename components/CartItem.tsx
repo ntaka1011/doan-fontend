@@ -1,5 +1,6 @@
 import { useAppDispatch } from "@/hooks/useSelector";
 import { deleteCart, updateCart } from "@/store/cartSlice";
+import { convertPrice } from "@/utils/convertPrice";
 import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
@@ -45,7 +46,7 @@ const CartItem: React.FC<CartItemProps> = ({ cartItem }) => {
 
           {/* Price */}
           <div className="text-sm md:text-md font-bold text-black/[0.5] mt-2">
-            {cartItem.oneQuantityPrice}₫
+            {convertPrice(cartItem.oneQuantityPrice)}
           </div>
         </div>
         {/* subtitle */}

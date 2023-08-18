@@ -5,14 +5,17 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { OpenContext } from "@/context/OpenContext";
+import { convertPrice } from "@/utils/convertPrice";
 interface ProductItemProps {
   product: Product;
   toggleDisplay?: boolean;
+  className?: string
 }
 
 const ProductItem: React.FC<ProductItemProps> = ({
   product,
   toggleDisplay = false,
+  className
 }) => {
   const { dispatch } = useContext(OpenContext);
   const percent = useCalculator(product?.original_price, product?.price);
@@ -27,9 +30,9 @@ const ProductItem: React.FC<ProductItemProps> = ({
   };
 
   return (
-    <div className={`relative w-full ${toggleDisplay ? "flex" : "block"}`}>
-      <Link href={`/product/${product.slug}`} className="relative">
-        <img src="/images/product2.webp" className="w-full" alt="" />
+    <div className={`${className || ""} relative w-full ${toggleDisplay ? "flex" : "block"}`}>
+      <Link href={`/product/${product.slug}`} className="relative ">
+        <img src={`${product?.thumbnail}`} className="w-full" alt="" />
         {product?.original_price && (
           <div className="py-[3px] px-[10px] absolute top-[10px] right-[10px] bg-[#35c0c5]">
             <span className="text-sm text-white">-{Math.floor(percent)}%</span>
@@ -37,10 +40,10 @@ const ProductItem: React.FC<ProductItemProps> = ({
         )}
       </Link>
 
-      <div className="ml-[15px] flex flex-col w-full pr-[15px] ">
+      <div className="ml-[15px] flex flex-col w-full pr-[15px] mt-[10px] ">
         <Link
           href={`/product/${product.slug}`}
-          className="leading-[20px] overflow-hidden max-w-full text-[#363636] hover:text-[#35c0c5] cursor-pointer whitespace-nowrap text-ellipsis mb-[10px]"
+          className="leading-[20px] overflow-hidden max-w-full text-center text-[#363636] hover:text-[#35c0c5] cursor-pointer whitespace-nowrap text-ellipsis mb-[10px]"
         >
           {product?.title}
         </Link>
@@ -48,14 +51,11 @@ const ProductItem: React.FC<ProductItemProps> = ({
           className={`flex mb-[10px] ${toggleDisplay ? "" : "justify-center "}`}
         >
           <p className="text-[#35c0c5] font-bold text-sm leading-5 mr-1">
-            {Math.round(product?.price * 1000)}₫
+            {convertPrice(product?.price)}
           </p>
           {product?.original_price && (
             <p className="leading-5 text-[12px] text-slate-500 italic line-through ">
-              {product?.original_price
-                .toLocaleString("en-US")
-                .replace(/,/g, ".")}
-              ₫
+              {convertPrice(product?.original_price)}
             </p>
           )}
         </div>
