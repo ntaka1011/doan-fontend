@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Wrapper from "./Wrapper";
 import { BiChevronDown } from "react-icons/bi";
 import { TiThMenu } from "react-icons/ti";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const subMenuData = [
   {
@@ -75,6 +76,24 @@ const subMenuData = [
 ];
 
 const Navbar = () => {
+  const [search, setSearch] = useState("")
+  const router = useRouter()
+  const handleSearch = () => {
+    router.push({
+      pathname: "/search",
+      query: { keyword: search },
+    });
+    setSearch("")
+  };
+  const handleSearchKeyUp = (e: any) => {
+    if (e.keyCode === 13) {
+      router.push({
+        pathname: "/search",
+        query: { keyword: search },
+      });
+      setSearch("")
+    }
+  };
   return (
     <div className="w-full h-10 bg-black relative">
       <Wrapper className="h-full ">
@@ -148,12 +167,15 @@ const Navbar = () => {
             <div className="flex">
               <div className="flex items-center border-r border-[#464646] px-[10px] group">
                 <FaSearch size={25} color="#35c0c5" />
-                <div className="hidden absolute group-hover:flex top-10 px-5 shadow-[0_0_15px_-5px_rgba(0,0,0,0.4)] right-[15px] md:right-[160px] items-center w-[300px] h-10 z-20">
+                <div className="hidden absolute group-hover:flex bg-white top-10 px-5 shadow-[0_0_15px_-5px_rgba(0,0,0,0.4)] right-[15px] md:right-[160px] items-center w-[300px] h-10 z-20">
                   <input
                     placeholder="Gõ tìm kiếm...."
                     className="leading-10 w-full border-none outline-none"
+                    onKeyUp={handleSearchKeyUp}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
-                  <div className="pl-5 cursor-pointer">
+                  <div onClick={handleSearch} className="pl-5 cursor-pointer z-20">
                     <FaSearch />
                   </div>
                 </div>

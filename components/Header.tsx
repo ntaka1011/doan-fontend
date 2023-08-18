@@ -47,6 +47,7 @@ const Header = () => {
         pathname: "/search",
         query: { keyword: search },
       });
+      setSearch("");
     }
   };
   const handleDelete = (uuid: any) => {

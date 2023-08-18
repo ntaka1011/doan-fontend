@@ -15,7 +15,7 @@ const Search = () => {
   const { searchProduct } = useProducts();
   const router = useRouter();
   const [sort, setSort] = useState({ sort: "createdAt", order: "desc" });
-  const [price, setPrice] = useState({ min: 1, max: 99999 });
+  const [price, setPrice] = useState({ min: 1, max: 9999999999 });
   const sortArray = Object.values(sort);
 
   const { data: products, mutate } = searchProduct({
