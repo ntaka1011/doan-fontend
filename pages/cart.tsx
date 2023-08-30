@@ -6,18 +6,34 @@ import { useAppSelector } from "@/hooks/useSelector";
 import { convertPrice } from "@/utils/convertPrice";
 import { instance } from "@/utils/useSWRConfig";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Cart = () => {
+  const router = useRouter()
   const cartItems = useAppSelector((state) => state.cart.cartItems);
-  console.log("🚀 ~ file: cart.tsx:11 ~ Cart ~ cartItems:", cartItems);
+
   const { user } = useContext(AuthContext);
   const total = cartItems?.reduce((total: any, num: any) => {
-    console.log("🚀 ~ file: Header.tsx:24 ~ Header ~ total:", total, num);
+
     return total + num.oneQuantityPrice;
   }, 0);
-  console.log("🚀 ~ file: cart.tsx:16 ~ total ~ total:", total);
+
   const handlePayment = async () => {
+    if (!user) {
+      toast.error("Please Login!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return router.push('/login')
+    }
     instance
       .post(`/checkout/payment`, {
         cartItems,
@@ -27,7 +43,7 @@ const Cart = () => {
         if (res.data.url) {
           window.location.href = res.data.url;
         }
-        
+
       })
       .catch((err) => console.log(err));
   };

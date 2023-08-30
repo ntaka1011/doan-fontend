@@ -11,6 +11,7 @@ import { useProducts } from "@/hooks/useProduct";
 import { Product } from "@/types/product";
 import { LoadingContext } from "@/context/LoadingContext";
 import Slider from "react-slick";
+import _ from 'lodash';
 import { settingFeature, settingNew, settings } from "@/constant/slider";
 
 const Aside = () => {
@@ -20,7 +21,6 @@ const Aside = () => {
   const { data: productNew, mutate: mutateNew } = getProductParams({
     new: true,
   });
-  console.log("🚀 ~ file: Aside.tsx:19 ~ Aside ~ productNew:", productNew);
   const { data: productFeature, mutate: mutateFeature } = getProductParams({
     feature: true,
   });
@@ -28,7 +28,6 @@ const Aside = () => {
   useEffect(() => {
     loadData();
   }, []);
-
   const loadData = async () => {
     try {
       setOpenLoading();
@@ -126,8 +125,8 @@ const Aside = () => {
               {/* feature */}
               <Slider {...settingFeature}>
                 {productFeature?.map((productItem: any, index: number) => (
-                    <ProductItem className={"mb-[30px] px-[15px]"} product={productItem} key={index} />
-                  ))}
+                  <ProductItem className={"mb-[30px] px-[15px]"} product={productItem} key={index} />
+                ))}
               </Slider>
             </div>
           </div>
@@ -160,13 +159,12 @@ const Aside = () => {
       <div className="flex lg:hidden md:hidden w-full pr-[15px]  flex-col">
         <span className="text-base uppercase mb-[30px]">Sản phẩm bán chạy</span>
         {/* product */}
-        {products?.map((productItem: any) =>
-          productItem.data
-            ?.slice(0, 3)
+        {
+          _.sampleSize(products?.data, 3)
             .map((pItem: Product, index: any) => (
               <ProductItemMini product={pItem} key={index} />
             ))
-        )}
+        }
         <Link
           href={"/"}
           className="text-base uppercase font-[450px] mb-[30px] hover:text-[#35c0c5]"
@@ -187,13 +185,12 @@ const Aside = () => {
       </div>
       <div className="hidden lg:hidden md:flex w-full pr-[15px]  flex-col">
         <span className="text-base uppercase mb-[30px]">Sản phẩm bán chạy</span>
-        {products?.map((productItem: any) =>
-          productItem.data
-            ?.slice(0, 3)
+        {
+          _.sampleSize(products?.data, 3)
             .map((pItem: Product, index: any) => (
               <ProductItemMini product={pItem} key={index} />
             ))
-        )}
+        }
         <Link href={"/"} className="text-base mb-[30px] hover:text-[#35c0c5]">
           Xem thêm sản phẩm
         </Link>

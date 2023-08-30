@@ -12,7 +12,7 @@ import Link from "next/link";
 import { AuthContext } from "@/context/AuthContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/useSelector";
 import { useRouter } from "next/router";
-import { deleteCart, removeAllCart } from "@/store/cartSlice";
+import { deleteCart } from "@/store/cartSlice";
 import { convertPrice } from "@/utils/convertPrice";
 
 const Header = () => {
@@ -22,7 +22,7 @@ const Header = () => {
   const [clientRendered, setClientRendered] = useState(false);
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
-  console.log("🚀 ~ file: Header.tsx:24 ~ Header ~ cartItems:", cartItems);
+  console.log("🚀 ~ file: Header.tsx:25 ~ Header ~ cartItems:", cartItems)
 
   useEffect(() => {
     setClientRendered(true);
@@ -35,7 +35,6 @@ const Header = () => {
   }, [cartItems]);
 
   const handleLogout = () => {
-    console.log("LOALOAL");
     authDispatch({ type: "LOGOUT", payload: null });
     localStorage.clear();
     router.push("/login");
@@ -58,13 +57,6 @@ const Header = () => {
     );
   };
 
-  const handleTest = () => {
-    dispatch(removeAllCart({
-      uuid: cartItems.map((item) => ({
-        uuid: item.uuid
-      }))
-    }))
-  }
   return (
     <header className="h-[70px] w-full ">
       <Wrapper className="flex items-center h-full">
@@ -181,7 +173,7 @@ const Header = () => {
                           </span>
                         </div>
                         <div className="py-[15px] leading-10">
-                          <button onClick={handleTest} className="bg-[#35c0c5] w-full uppercase text-white font-bold border border-[#35c0c5] hover:bg-white hover:text-[#35c0c5]">
+                          <button className="bg-[#35c0c5] w-full uppercase text-white font-bold border border-[#35c0c5] hover:bg-white hover:text-[#35c0c5]">
                             Tiến hành thanh toán
                           </button>
                         </div>

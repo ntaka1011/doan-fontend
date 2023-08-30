@@ -61,14 +61,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
 
-  // useEffect(() => {
-  //   if (state.user && state.user.isAdmin === true) {
-  //     router.push("/")
-  //   } else {
-  //     console.log("You're not allowed to authorizations on this")
-
-  //   }
-  // }, [router, state.user])
 
   return (
     <AuthContext.Provider

@@ -19,7 +19,6 @@ const Category = () => {
   const { getProducts, getProductParams } = useProducts();
   const { data: productNew } = getProductParams({ new: true });
   const [sort, setSort] = useState({ sort: "createdAt", order: "asc" });
-  console.log("🚀 ~ file: index.tsx:22 ~ Category ~ sort:", sort)
   const [price, setPrice] = useState({ min: 1, max: 999999999 });
   const { loading, setOpenLoading, setCloseLoading } =
     useContext(LoadingContext);
@@ -39,11 +38,11 @@ const Category = () => {
     { list: [], page_count: 0 }
   );
   useEffect(() => {
-    if (Array.isArray(products?.[0].data)) {
+    if (Array.isArray(products?.data)) {
       setPaginate({
-        list: products?.[0].data,
+        list: products?.data,
         page_count: Math.ceil(
-          products[0].metaData[0]?.totalDocuments / paginateSetup.page_size
+          products?.metaData[0]?.totalDocuments / paginateSetup.page_size
         ),
       });
     }
@@ -55,6 +54,7 @@ const Category = () => {
 
   useEffect(() => {
     loadingData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const loadingData = async () => {
     try {
@@ -65,10 +65,10 @@ const Category = () => {
     }
   };
   const handleChange = (e: any) => {
-    setSort({sort: e.value.sort, order: e.value.order})
+    setSort({ sort: e.value.sort, order: e.value.order })
   }
   const handleChangePrice = (e: any) => {
-    setPrice({min: e.value.min, max: e.value.max})
+    setPrice({ min: e.value.min, max: e.value.max })
   }
   return (
     <>
@@ -96,12 +96,12 @@ const Category = () => {
           <div className="flex items-center justify-between mb-[30px]">
             <div className="flex items-center">
               <span className="mr-[6px]">Sắp xếp:</span>
-              <Select onChange={handleChange} defaultValue={optionSort[0]} options={optionSort}/>
+              <Select onChange={handleChange} defaultValue={optionSort[0]} options={optionSort} />
             </div>
 
             <div className="flex items-center">
               <span className="mr-[6px]">Giá tiền:</span>
-              <Select onChange={handleChangePrice} defaultValue={optionPrice[0]} options={optionPrice}/>
+              <Select onChange={handleChangePrice} defaultValue={optionPrice[0]} options={optionPrice} />
             </div>
           </div>
           <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-[30px] mb-[30px]">

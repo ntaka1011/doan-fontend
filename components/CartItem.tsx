@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@/hooks/useSelector";
 import { deleteCart, updateCart } from "@/store/cartSlice";
 import { convertPrice } from "@/utils/convertPrice";
-import React from "react";
+import React, { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface CartItemProps {
@@ -9,9 +9,12 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ cartItem }) => {
-  console.log("🚀 ~ file: CartItem.tsx:9 ~ cartItem:", cartItem);
+  // const [select, setSelect] = useState({
+  //   size: cartItem.selectSize.size,
+  //   id: cartItem.selectSize.id
+  // })
   const dispatch = useAppDispatch();
-  const updateCartItem = (e: any, key: string) => {
+  const updateCartItem = async (e: any, key: string) => {
     dispatch(
       updateCart({
         uuid: cartItem.uuid,
@@ -65,9 +68,9 @@ const CartItem: React.FC<CartItemProps> = ({ cartItem }) => {
                 {cartItem.cartItem.size.map((item: any, key: number) => (
                   <option
                     key={key}
-                    value={item.size}
+                    value={`${item.size}`}
                     selected={cartItem.selectSize === item.size}
-                    disabled={!item.enabled ? true : false}
+                    disabled={!item.quantity ? true : false}
                   >
                     {item.size}
                   </option>

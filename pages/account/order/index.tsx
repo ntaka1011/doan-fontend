@@ -37,10 +37,9 @@ const Page = () => {
   const router = useRouter();
   const { dispatch } = useContext(AuthContext);
   const { data } = getOrderUser(user?._id);
-  console.log("🚀 ~ file: order.tsx:38 ~ Page ~ data:", data);
 
   const handleLogout = () => {
-    console.log("LOALOAL");
+
     dispatch({ type: "LOGOUT", payload: null });
     localStorage.clear();
     router.push("/login");
@@ -135,10 +134,6 @@ const Page = () => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {data?.map((orderItem: any, index: number) => {
-                        console.log(
-                          "🚀 ~ file: order.tsx:119 ~ {data?.map ~ orderItem:",
-                          orderItem.shipping.address.city
-                        );
                         const dateString = orderItem.createdAt;
                         const date = new Date(dateString);
                         const year = date.getFullYear();
@@ -147,10 +142,6 @@ const Page = () => {
                           .padStart(2, "0");
                         const day = date.getDate().toString().padStart(2, "0");
                         const formattedDate = `${year}/${month}/${day}`;
-                        console.log(
-                          "test",
-                          data.cartItem?.shipping.address.city
-                        );
                         return (
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -167,11 +158,10 @@ const Page = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span
                                 className={`px-2 inline-flex text-xs leading-5
-                              font-semibold rounded-full ${
-                                orderItem.status === "Pending"
-                                  ? "bg-red-500 text-white"
-                                  : "bg-green-800"
-                              }`}
+                              font-semibold rounded-full ${orderItem.status === "Pending"
+                                    ? "bg-red-500 text-white"
+                                    : "bg-green-800"
+                                  }`}
                               >
                                 {orderItem.status === "Pending"
                                   ? "Pending"

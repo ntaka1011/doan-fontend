@@ -12,11 +12,8 @@ import { Provider } from "react-redux";
 import { store, persistor } from "@/store/store";
 import { PersistGate } from "redux-persist/integration/react";
 import {
-  LoadingContext,
   LoadingContextProvide,
 } from "@/context/LoadingContext";
-import Spinner from "@/components/Spinner";
-import { useContext, useEffect } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

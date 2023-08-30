@@ -15,8 +15,8 @@ import { useAppDispatch } from "@/hooks/useSelector";
 import { addCart } from "@/store/cartSlice";
 import Spinner from "@/components/Spinner";
 import { LoadingContext } from "@/context/LoadingContext";
-import Slider from "react-slick";
-import { settingRow, settings } from "@/constant/slider";
+import { convertPrice } from "@/utils/convertPrice";
+import _ from "lodash";
 
 const Product = () => {
   const [selectSize, setSelectSize] = useState<number>(6);
@@ -25,22 +25,14 @@ const Product = () => {
   const router = useRouter();
   const slugProduct = router.query.slug;
   const dispatch = useAppDispatch();
-  const { getProductBySlug, getProducts } = useProducts();
+  const { getProductBySlug } = useProducts();
   const { getCategories } = useCategory();
   const { data: product, mutate } = getProductBySlug(String(slugProduct));
-  console.log("🚀 ~ file: [slug].tsx:30 ~ Product ~ product:", product)
 
   const { data: category } = getCategories({ _id: product?.categories[0] });
-  console.log("🚀 ~ file: [slug].tsx:33 ~ Product ~ category:", category)
-
-  const { data: products } = getProducts({
-    categories: category?.[0]?._id
-  });
-  console.log("🚀 ~ file: [slug].tsx:38 ~ Product ~ products:", products)
 
   const [quantity, setQuantity] = useState<number>(1);
-  console.log("🚀 ~ file: [slug].tsx:30 ~ Product ~ quantity:", quantity);
-  const [active, setActive] = useState<number>(0);
+  const [active, setActive] = useState<number>(-1);
   const [color, setColor] = useState<string>("Chọn màu sắc");
   const images = product?.images;
 
@@ -101,7 +93,7 @@ const Product = () => {
               quantity: quantity,
               color: color,
               selectSize,
-              oneQuantityPrice: product?.price,
+              oneQuantityPrice: product?.price * quantity,
             })
           );
           toast.success("Sản phẩm đã được thêm vào giỏ hàng", {
@@ -141,11 +133,11 @@ const Product = () => {
             Trang chủ
           </Link>
           <span className="w-4">/</span>
-          {/* <Link href={`/category/${category[0].slug}`}> */}
-          <span className="mr-4 hover:text-[#35c0c5]">
-            {category && category[0]?.name}
-          </span>
-          {/* </Link> */}
+          <Link href={`/category/${category?.[0]?.slug}`}>
+            <span className="mr-4 hover:text-[#35c0c5]">
+              {category && category[0]?.name}
+            </span>
+          </Link>
           <span className="w-4">/</span>
           <span className="text-[#35c0c5]">{product?.title}</span>
         </div>
@@ -188,20 +180,17 @@ const Product = () => {
               <p className="flex justify-center w-4">|</p>
               <div className="flex items-center">
                 <p className="text-sm font-bold mr-[5px]">Đã bán: </p>
-                <p className="text-sm">{product?.selled}</p>
+                <p className="text-sm">{product?.selled || 0}</p>
               </div>
             </div>
             <div className="flex mb-[15px] items-center">
               <p className="text-[#35c0c5] font-bold text-[26px] leading-5 mr-[10px]">
-                {product?.price.toLocaleString("en-US").replace(/,/g, ".")}₫
+                {convertPrice(product?.price)}
               </p>
 
               {product?.original_price && (
                 <p className="leading-5 text-[20px] text-slate-500 italic line-through ">
-                  {product?.original_price
-                    .toLocaleString("en-US")
-                    .replace(/,/g, ".")}
-                  ₫
+                  {convertPrice(product?.original_price)}
                 </p>
               )}
             </div>
@@ -213,6 +202,7 @@ const Product = () => {
             <div>
               <div className="mt-[10px] flex items-center pb-2">
                 <p className="w-[100px] h-10 flex items-center">Màu sắc:</p>
+
                 <div className="pl-5 pr-7 w-[300px] h-[40px] border border-[#eaebf3] flex items-center justify-between group relative">
                   <span className="text-[13px]">{color}</span>
                   <AiOutlineDown className="text-gray-600" size={12} />
@@ -263,10 +253,10 @@ const Product = () => {
                   <button
                     disabled={!product?.quantity && product?.quantity < 1}
                     onClick={handleAddProduct}
-                    className={`px-[25px] h-[45px] bg-[#35c0c5] ${product?.quantity && product?.quantity >= 1 ? "hover:bg-white hover:text-[#35c0c5]" : "opacity-50 cursor-not-allowed" } text-white text-sm border border-[#35c0c5]`}
+                    className={`px-[25px] h-[45px] bg-[#35c0c5] ${product?.quantity && product?.quantity >= 1 ? "hover:bg-white hover:text-[#35c0c5]" : "opacity-50 cursor-not-allowed"} text-white text-sm border border-[#35c0c5]`}
                   >
-                    {product?.quantity && product?.quantity >= 1 ? "Thêm vào giỏ hàng" :  "Hết Hàng"}
-                    
+                    {product?.quantity && product?.quantity >= 1 ? "Thêm vào giỏ hàng" : "Hết Hàng"}
+
                   </button>
                 </div>
                 <div>
@@ -282,8 +272,8 @@ const Product = () => {
                   {product?.size.map((item: any, index: number) => (
                     <div
                       key={index}
-                      className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] border flex justify-center items-center ${active === index ? "bg-[#35c0c5]" : ""
-                        }`}
+                      className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] flex justify-center items-center  ${!item.quantity ? ' cursor-not-allowed bg-black/[0.1] opacity-70' : `border ${active === index ? "bg-[#35c0c5]" : ""
+                        }`}`}
                       onClick={() => {
                         setSelectSize(item?.size);
                         updateActive(index);
@@ -312,18 +302,6 @@ const Product = () => {
                 }`}
             >
               Thông tin sản phẩm
-            </li>
-            <li
-              className={`py-[10px] px-[30px] border uppercase cursor-pointer ${active === 15 ? "active" : ""
-                }`}
-            >
-              Thanh toán vận chuyển
-            </li>
-            <li
-              className={`py-[10px] px-[30px] border uppercase cursor-pointer ${active === 16 ? "active" : ""
-                }`}
-            >
-              Đánh giá sản phẩm
             </li>
           </ul>
           <div className="border-t border-[#e1e1e1]">
@@ -361,13 +339,12 @@ const Product = () => {
           Sản phẩm liên quan
         </Link>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-[30px] mb-[30px]">
-          {products?.map((productItem: any) =>
-            productItem.data
-              ?.slice(0, 3)
+          {
+            _.sampleSize(product?.data)
               .map((pItem: any, index: any) => (
                 <ProductItem product={pItem} key={index} />
               ))
-          )}
+          }
         </div>
       </Wrapper>
     </>

@@ -29,7 +29,6 @@ const Modal: React.FC<ModalProps> = ({ slug }) => {
   const [active, setActive] = useState<number>(1);
   const { data: product } = getProductBySlug(slug);
   const { data: category } = getCategories({ _id: product?.categories[0] });
-  console.log("🚀 ~ file: Modal.tsx:22 ~ product:", product);
 
   const updateActive = (id: number) => {
     setActive(id);
@@ -258,9 +257,8 @@ const Modal: React.FC<ModalProps> = ({ slug }) => {
                     {product?.size.map((item: any, index: number) => (
                       <div
                         key={index}
-                        className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] border flex items-center justify-center ${
-                          active === index ? "bg-[#35c0c5]" : ""
-                        }`}
+                        className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] border flex items-center justify-center ${active === index ? "bg-[#35c0c5]" : ""
+                          }`}
                         onClick={() => {
                           setSelectSize(item?.size);
                           updateActive(index);

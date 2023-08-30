@@ -1,6 +1,7 @@
 import Wrapper from "@/components/Wrapper";
 import { AuthContext } from "@/context/AuthContext";
 import { useOrder } from "@/hooks/useOrder";
+import { convertPrice } from "@/utils/convertPrice";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
@@ -11,7 +12,6 @@ const Page = () => {
   const { getOrder } = useOrder();
 
   const { data } = getOrder(String(router.query?.id));
-  console.log("🚀 ~ file: [id].tsx:14 ~ Page ~ data:", data);
 
   return (
     <Wrapper>
@@ -66,11 +66,10 @@ const Page = () => {
             <div className="flex items-center">
               <p>Trạng thái vận chuyển:&nbsp;</p>
               <p
-                className={`${
-                  data?.status === "Pending"
-                    ? "text-[#FF0000]"
-                    : "text-green-500"
-                } font-extrabold`}
+                className={`${data?.status === "Pending"
+                  ? "text-[#FF0000]"
+                  : "text-green-500"
+                  } font-extrabold`}
               >
                 {data?.status === "Pending" ? "Chưa giao hàng" : "Đã giao hàng"}
               </p>
@@ -124,10 +123,6 @@ const Page = () => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {data?.orderItems.map((orderItem: any, index: number) => {
-                        console.log(
-                          "🚀 ~ file: [id].tsx:178 ~ {data?.orderItems.map ~ orderItem:",
-                          orderItem
-                        );
                         return (
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -136,7 +131,7 @@ const Page = () => {
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
                                   <img
                                     className="h-10 w-10 rounded-full"
-                                    src={orderItem?.product.thumbnail}
+                                    src={orderItem?.product.images[0]}
                                     alt=""
                                   />
                                 </div>
@@ -151,13 +146,13 @@ const Page = () => {
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {orderItem.product.price}
+                              {convertPrice(orderItem.product.price)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                               {orderItem.quantity}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              {orderItem.product.price * orderItem.quantity}
+                              {convertPrice(orderItem.product.price * orderItem.quantity)}
                             </td>
                           </tr>
                         );
@@ -179,7 +174,7 @@ const Page = () => {
                         Tổng tiền
                       </p>
                       <p className="text-[19px] font-bold text-[#CA170E]">
-                        {data?.total.toLocaleString("en-US").replace(/,/g, ".")}
+                        {convertPrice(data?.total)}
                       </p>
                     </div>
                   </div>

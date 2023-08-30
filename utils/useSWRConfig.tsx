@@ -10,8 +10,6 @@ export const instance = axios.create({
     "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE",
   },
 });
-console.log(process.env.NEXT_PUBLIC_API_URL);
-
 instance.interceptors.request.use(
   async (config) => {
     const token =

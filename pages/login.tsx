@@ -10,7 +10,6 @@ import { useUser } from "@/hooks/useUser";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "@/context/AuthContext";
 import { LoadingContext } from "@/context/LoadingContext";
-import Spinner from "@/components/Spinner";
 
 interface LoginProps {
   email: string;
@@ -19,7 +18,7 @@ interface LoginProps {
 
 const Login = () => {
   const { user, dispatch } = useContext(AuthContext);
-  console.log("🚀 ~ file: login.tsx:20 ~ Login ~ user:", user);
+
   const { loginUser } = useUser();
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
@@ -38,11 +37,10 @@ const Login = () => {
 
   const handleSingUp = async (data: LoginProps) => {
     dispatch({ type: "LOGIN_START" });
-    console.log("🚀 ~ file: login.tsx:31 ~ handleSingUp ~ data:", data);
+
     try {
       setOpenLoading();
       const res = await loginUser(data);
-      console.log("🚀 ~ file: login.tsx:40 ~ handleSingUp ~ res:", res);
 
       if (res?.status === 200) {
         toast.success("You have successfully registered!", {
@@ -55,11 +53,7 @@ const Login = () => {
           progress: undefined,
           theme: "light",
         });
-        const { accessToken, refreshToken, ...userAuth } = res;
-        console.log(
-          "🚀 ~ file: login.tsx:52 ~ handleSingUp ~ userAuth:",
-          userAuth
-        );
+        const { ...userAuth } = res;
         dispatch({ type: "LOGIN_SUCCESS", payload: userAuth });
         localStorage.setItem("accessToken", res.accessToken);
         localStorage.setItem("refreshToken", res.refreshToken);

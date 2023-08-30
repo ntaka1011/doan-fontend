@@ -21,7 +21,7 @@ interface RegisterProps {
 }
 const Register = () => {
   const route = useRouter();
-  const { user, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { createUser } = useUser();
   const phoneRegExp = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
   const validationSchema = Yup.object().shape({
@@ -50,11 +50,9 @@ const Register = () => {
     useContext(LoadingContext);
 
   const handleRegister = async (data: RegisterProps) => {
-    console.log("🚀 ~ file: register.tsx:45 ~ handleRegister ~ data:", data);
     try {
       setOpenLoading();
       const res = await createUser(data);
-      console.log("🚀 ~ file: register.tsx:44 ~ handleRegister ~ res:", res);
       if (res.status === 200) {
         toast.success("You have successfully registered!", {
           position: "top-right",

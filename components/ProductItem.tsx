@@ -32,7 +32,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
   return (
     <div className={`${className || ""} relative w-full ${toggleDisplay ? "flex" : "block"}`}>
       <Link href={`/product/${product.slug}`} className="relative ">
-        <img src={`${product?.thumbnail}`} className="w-full" alt="" />
+        <img src={`${product?.images[0]}`} className="w-full" alt="" />
         {product?.original_price && (
           <div className="py-[3px] px-[10px] absolute top-[10px] right-[10px] bg-[#35c0c5]">
             <span className="text-sm text-white">-{Math.floor(percent)}%</span>

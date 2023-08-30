@@ -29,7 +29,6 @@ const Category = () => {
   const { data: productNew } = getProductParams({ new: true });
   const categorySlug = String(router.query.slug);
   const { data: category } = getCategory(categorySlug);
-  console.log("🚀 ~ file: index.tsx:32 ~ Category ~ category:", category);
   const sortArray = Object.values(sort);
   const { loading, setOpenLoading, setCloseLoading } =
     useContext(LoadingContext);
@@ -45,7 +44,6 @@ const Category = () => {
     page: paginateSetup.page,
     limit: paginateSetup.page_size,
   });
-  console.log("🚀 ~ file: index.tsx:42 ~ Category ~ products:", products);
   useEffect(() => {
     loadingData;
   }, [products]);
@@ -66,11 +64,11 @@ const Category = () => {
     setPaginateSetup({ ...paginateSetup, page: event.selected + 1 });
   };
   useEffect(() => {
-    if (Array.isArray(products?.[0].data)) {
+    if (Array.isArray(products?.data)) {
       setPaginate({
-        list: products?.[0].data,
+        list: products?.data,
         page_count: Math.ceil(
-          products[0].metaData[0]?.totalDocuments / paginateSetup.page_size
+          products.metaData[0]?.totalDocuments / paginateSetup.page_size
         ),
       });
     }
@@ -116,12 +114,12 @@ const Category = () => {
             </div>
           </div>
           <div className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-[30px] mb-[30px]">
-            {paginate?.list.map((product: Product, index: number) => (
+            {paginate?.list?.map((product: Product, index: number) => (
               <ProductItem key={index} product={product} />
             ))}
           </div>
 
-          {paginate?.list.length >= 9 && <Paginate
+          {paginate?.list?.length >= 9 && <Paginate
             pageCount={paginate.page_count}
             onSelectPage={handlePaginatePageClick}
           />}

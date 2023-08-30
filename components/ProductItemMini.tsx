@@ -16,7 +16,7 @@ const ProductItemMini: FC<ProductItemMiniProps> = ({ product, className }) => {
         href={`/product/${product.slug}`}
         className="inline-block w-auto cursor-pointer"
       >
-        <img src={`${product?.thumbnail}`}
+        <img src={`${product?.images[0]}`}
           alt="product"
           className="min-w-[100px] object-cover object-center"
         />

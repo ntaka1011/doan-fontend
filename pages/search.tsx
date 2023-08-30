@@ -33,7 +33,6 @@ const Search = () => {
   const [paginate, setPaginate] = useState<{ list: any[]; page_count: number }>(
     { list: [], page_count: 0 }
   );
-  console.log("🚀 ~ file: index.tsx:27 ~ Category ~ paginate:", paginate);
 
   const handlePaginatePageClick = (event: { selected: number }) => {
     setPaginateSetup({ ...paginateSetup, page: event.selected + 1 });

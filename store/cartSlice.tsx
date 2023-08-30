@@ -24,7 +24,7 @@ export const cartSlice = createSlice({
             itemSỉze.quantity + parseInt(action.payload.quantity);
           itemSỉze.oneQuantityPrice = +(
             itemSỉze.cartItem.price * itemSỉze.quantity
-          ).toFixed(3);
+          );
         } else {
           state.cartItems.push(action.payload);
         }
@@ -40,10 +40,6 @@ export const cartSlice = createSlice({
             cartItem.oneQuantityPrice = +(
               cartItem.quantity * cartItem.cartItem.price
             ).toFixed(3);
-            console.log(
-              "🚀 ~ file: cartSlice.tsx:41 ~ state.cartItems.map ~ cartItem:",
-              cartItem
-            );
           }
           if (action.payload.key === "selectSize") {
             cartItem.selectSize = action.payload.value;
@@ -58,9 +54,7 @@ export const cartSlice = createSlice({
       );
     },
     removeAllCart: (state, action) => {
-      console.log("🚀 ~ file: cartSlice.tsx:61 ~ state:", current(state))
       const listCart = action.payload.uuid
-      console.log("🚀 ~ file: cartSlice.tsx:62 ~ listCart:", listCart)
       state.cartItems = current(state).cartItems?.filter((item) => {
         return item.uuid === listCart
       })

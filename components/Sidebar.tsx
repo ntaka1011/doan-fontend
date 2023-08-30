@@ -9,6 +9,7 @@ import New from "./New";
 import { useProducts } from "@/hooks/useProduct";
 import { Product } from "@/types/product";
 import { LoadingContext } from "@/context/LoadingContext";
+import _ from "lodash";
 
 const Sidebar = () => {
   const { loading, setOpenLoading, setCloseLoading } =
@@ -16,7 +17,6 @@ const Sidebar = () => {
   const { getProducts } = useProducts();
 
   const { data: products, mutate } = getProducts();
-  console.log("🚀 ~ file: Sidebar.tsx:19 ~ Sidebar ~ data:", products);
 
   useEffect(() => {
     loadData();
@@ -44,13 +44,12 @@ const Sidebar = () => {
       </div>
       <div className="w-full pr-[15px] flex flex-col mb-[30px]">
         <span className="text-base uppercase mb-[30px]">Sản phẩm bán chạy</span>
-        {products?.map((productItem: any) =>
-          productItem.data
-            ?.slice(0, 3)
+        {
+          _.sampleSize(products?.data)
             .map((pItem: Product, index: any) => (
               <ProductItemMini product={pItem} key={index} />
             ))
-        )}
+        }
 
         <Link href={"/"} className="text-base mb-[30px] hover:text-[#35c0c5]">
           Xem thêm sản phẩm
