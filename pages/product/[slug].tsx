@@ -72,7 +72,7 @@ const Product = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
-        })
+        });
       } else {
         if (color === "Chọn màu sắc") {
           toast.error("Làm ơn hãy chọn màu sắc", {
@@ -188,10 +188,12 @@ const Product = () => {
                 {convertPrice(product?.price)}
               </p>
 
-              {product?.original_price && (
+              {product?.original_price ? (
                 <p className="leading-5 text-[20px] text-slate-500 italic line-through ">
                   {convertPrice(product?.original_price)}
                 </p>
+              ) : (
+                ""
               )}
             </div>
             <div className="py-[15px]">
@@ -253,10 +255,15 @@ const Product = () => {
                   <button
                     disabled={!product?.quantity && product?.quantity < 1}
                     onClick={handleAddProduct}
-                    className={`px-[25px] h-[45px] bg-[#35c0c5] ${product?.quantity && product?.quantity >= 1 ? "hover:bg-white hover:text-[#35c0c5]" : "opacity-50 cursor-not-allowed"} text-white text-sm border border-[#35c0c5]`}
+                    className={`px-[25px] h-[45px] bg-[#35c0c5] ${
+                      product?.quantity && product?.quantity >= 1
+                        ? "hover:bg-white hover:text-[#35c0c5]"
+                        : "opacity-50 cursor-not-allowed"
+                    } text-white text-sm border border-[#35c0c5]`}
                   >
-                    {product?.quantity && product?.quantity >= 1 ? "Thêm vào giỏ hàng" : "Hết Hàng"}
-
+                    {product?.quantity && product?.quantity >= 1
+                      ? "Thêm vào giỏ hàng"
+                      : "Hết Hàng"}
                   </button>
                 </div>
                 <div>
@@ -272,8 +279,11 @@ const Product = () => {
                   {product?.size.map((item: any, index: number) => (
                     <div
                       key={index}
-                      className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] flex justify-center items-center  ${!item.quantity ? ' cursor-not-allowed bg-black/[0.1] opacity-70' : `border ${active === index ? "bg-[#35c0c5]" : ""
-                        }`}`}
+                      className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] flex justify-center items-center  ${
+                        +item.quantity === 0
+                          ? " cursor-not-allowed bg-black/[0.1] opacity-70"
+                          : `border ${active === index ? "bg-[#35c0c5]" : ""}`
+                      }`}
                       onClick={() => {
                         setSelectSize(item?.size);
                         updateActive(index);
@@ -298,8 +308,9 @@ const Product = () => {
         <div className="mb-[100px]">
           <ul className="block text-center lg:flex">
             <li
-              className={`py-[10px] px-[30px] uppercase cursor-pointer ${active === 1 ? "active" : ""
-                }`}
+              className={`py-[10px] px-[30px] uppercase cursor-pointer ${
+                active === 1 ? "active" : ""
+              }`}
             >
               Thông tin sản phẩm
             </li>
@@ -339,12 +350,9 @@ const Product = () => {
           Sản phẩm liên quan
         </Link>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-[30px] mb-[30px]">
-          {
-            _.sampleSize(product?.data)
-              .map((pItem: any, index: any) => (
-                <ProductItem product={pItem} key={index} />
-              ))
-          }
+          {_.sampleSize(product?.data).map((pItem: any, index: any) => (
+            <ProductItem product={pItem} key={index} />
+          ))}
         </div>
       </Wrapper>
     </>

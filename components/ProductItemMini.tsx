@@ -6,7 +6,7 @@ import { convertPrice } from "@/utils/convertPrice";
 
 interface ProductItemMiniProps {
   product: Product;
-  className?: string
+  className?: string;
 }
 
 const ProductItemMini: FC<ProductItemMiniProps> = ({ product, className }) => {
@@ -16,7 +16,8 @@ const ProductItemMini: FC<ProductItemMiniProps> = ({ product, className }) => {
         href={`/product/${product.slug}`}
         className="inline-block w-auto cursor-pointer"
       >
-        <img src={`${product?.images[0]}`}
+        <img
+          src={`${product?.images[0]}`}
           alt="product"
           className="min-w-[100px] object-cover object-center"
         />
@@ -32,10 +33,12 @@ const ProductItemMini: FC<ProductItemMiniProps> = ({ product, className }) => {
           <p className="text-[#35c0c5] font-bold text-sm leading-5 mr-1">
             {convertPrice(product.price)}
           </p>
-          {product?.original_price && (
+          {product?.original_price ? (
             <p className="leading-5 text-[12px] text-slate-500 italic line-through ">
               {convertPrice(product.original_price)}
             </p>
+          ) : (
+            ""
           )}
         </div>
         <button className="outline-none border text-sm uppercase border-[#ebebeb] h-[35px] px-[10px] max-w-[120px] hover:bg-[#35c0c5] hover:text-[#fff]">

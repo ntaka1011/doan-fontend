@@ -44,12 +44,9 @@ const Sidebar = () => {
       </div>
       <div className="w-full pr-[15px] flex flex-col mb-[30px]">
         <span className="text-base uppercase mb-[30px]">Sản phẩm bán chạy</span>
-        {
-          _.sampleSize(products?.data)
-            .map((pItem: Product, index: any) => (
-              <ProductItemMini product={pItem} key={index} />
-            ))
-        }
+        {products?.data.slice(0, 3).map((pItem: Product, index: any) => (
+          <ProductItemMini product={pItem} key={index} />
+        ))}
 
         <Link href={"/"} className="text-base mb-[30px] hover:text-[#35c0c5]">
           Xem thêm sản phẩm

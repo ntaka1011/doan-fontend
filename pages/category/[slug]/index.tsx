@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from "react";
 import optionSort from "@/data/optionSort.json";
 import optionPrice from "@/data/optionPrice.json";
 import items from "@/data/sidebar.json";
-import Select from 'react-select';
+import Select from "react-select";
 import Contact from "@/components/Contact";
 import { useProducts } from "@/hooks/useProduct";
 import { Product } from "@/types/product";
@@ -74,11 +74,11 @@ const Category = () => {
     }
   }, [paginateSetup, products]);
   const handleChange = (e: any) => {
-    setSort({ sort: e.value.sort, order: e.value.order })
-  }
+    setSort({ sort: e.value.sort, order: e.value.order });
+  };
   const handleChangePrice = (e: any) => {
-    setPrice({ min: e.value.min, max: e.value.max })
-  }
+    setPrice({ min: e.value.min, max: e.value.max });
+  };
   return (
     <>
       {loading ? <Spinner /> : ""}
@@ -105,12 +105,20 @@ const Category = () => {
           <div className="flex items-center justify-between mb-[30px]">
             <div className="flex items-center">
               <span className="mr-[6px]">Sắp xếp:</span>
-              <Select onChange={handleChange} defaultValue={optionSort[0]} options={optionSort} />
+              <Select
+                onChange={handleChange}
+                defaultValue={optionSort[0]}
+                options={optionSort}
+              />
             </div>
 
             <div className="flex items-center">
               <span className="mr-[6px]">Giá tiền:</span>
-              <Select onChange={handleChangePrice} defaultValue={optionPrice[0]} options={optionPrice} />
+              <Select
+                onChange={handleChangePrice}
+                defaultValue={optionPrice[0]}
+                options={optionPrice}
+              />
             </div>
           </div>
           <div className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-[30px] mb-[30px]">
@@ -119,10 +127,12 @@ const Category = () => {
             ))}
           </div>
 
-          {paginate?.list?.length >= 9 && <Paginate
-            pageCount={paginate.page_count}
-            onSelectPage={handlePaginatePageClick}
-          />}
+          {paginate?.list?.length > 1 && (
+            <Paginate
+              pageCount={paginate.page_count}
+              onSelectPage={handlePaginatePageClick}
+            />
+          )}
           <div className="block md:block lg:hidden">
             <div className=" mb-[30px]">
               <span className="text-base uppercase font-medium">
@@ -137,9 +147,11 @@ const Category = () => {
             </div>
             <p className="text-base uppercase mb-[30px]">Sản phẩm mới</p>
             <div className="grid grid-cols-1 gap-[30px] mb-[30px]">
-              {productNew?.slice(0, 3).map((productItem: any, index: number) => (
-                <ProductItem product={productItem} key={index} />
-              ))}
+              {productNew
+                ?.slice(0, 3)
+                .map((productItem: any, index: number) => (
+                  <ProductItem product={productItem} key={index} />
+                ))}
             </div>
             <div className="mb-[30px]">
               <Link
