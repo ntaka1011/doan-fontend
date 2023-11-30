@@ -9,6 +9,7 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ cartItem }) => {
+  console.log("🚀 ~ file: CartItem.tsx:12 ~ cartItem:", cartItem);
   // const [select, setSelect] = useState({
   //   size: cartItem.selectSize.size,
   //   id: cartItem.selectSize.id
@@ -35,7 +36,12 @@ const CartItem: React.FC<CartItemProps> = ({ cartItem }) => {
     <div className="flex py-5 gap-3 md:gap-5 border-b">
       <div className="shrink-0 aspect-square w-[50px] md:w-[120px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/product2.webp" alt="image" width={120} height={120} />
+        <img
+          src={cartItem?.cartItem?.images[0]}
+          alt="image"
+          width={120}
+          height={120}
+        />
       </div>
 
       <div className="w-full flex flex-col">

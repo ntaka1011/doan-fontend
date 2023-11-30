@@ -16,10 +16,22 @@ import { addCart } from "@/store/cartSlice";
 import Spinner from "@/components/Spinner";
 import { LoadingContext } from "@/context/LoadingContext";
 import { convertPrice } from "@/utils/convertPrice";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import _ from "lodash";
+import { useComment } from "@/hooks/useComment";
+import CommentItem from "../../components/CommentItem";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "@/context/AuthContext";
+
+interface CommentProps {
+  name: string;
+  email: string;
+  content: string;
+}
 
 const Product = () => {
-  const [selectSize, setSelectSize] = useState<number>(6);
+  const [selectSize, setSelectSize] = useState<number>();
   const { loading, setOpenLoading, setCloseLoading } =
     useContext(LoadingContext);
   const router = useRouter();
@@ -27,12 +39,20 @@ const Product = () => {
   const dispatch = useAppDispatch();
   const { getProductBySlug } = useProducts();
   const { getCategories } = useCategory();
+  const { user } = useContext(AuthContext);
   const { data: product, mutate } = getProductBySlug(String(slugProduct));
 
   const { data: category } = getCategories({ _id: product?.categories[0] });
 
+  const { getComment, createComment } = useComment();
+
+  const { data: comments, mutate: commentMutate } = getComment({
+    _id: product?._id,
+  });
+
   const [quantity, setQuantity] = useState<number>(1);
   const [active, setActive] = useState<number>(-1);
+  const [info, setInfo] = useState("info");
   const [color, setColor] = useState<string>("Chọn màu sắc");
   const images = product?.images;
 
@@ -40,10 +60,22 @@ const Product = () => {
     loadData();
   }, [product]);
 
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required("Email is required").email("Email is invalid"),
+    name: Yup.string().required("Name is required"),
+    content: Yup.string().required("Content is required"),
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
+
+  const { register, handleSubmit, formState, reset } =
+    useForm<CommentProps>(formOptions);
+  const { errors } = formState;
+
   const loadData = async () => {
     try {
       setOpenLoading();
       await mutate();
+      await commentMutate();
     } finally {
       setCloseLoading();
     }
@@ -58,6 +90,46 @@ const Product = () => {
 
   const updateActive = (id: number) => {
     setActive(id);
+  };
+
+  const handleAddComment = async (data: CommentProps) => {
+    const newData = {
+      ...data,
+      productId: product?._id,
+      userId: user?._id,
+    };
+    try {
+      setOpenLoading();
+      const res = await createComment(newData);
+      if (res?.status === 200) {
+        toast.success("You have successfully add comment!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        reset();
+        await commentMutate();
+        setCloseLoading();
+      } else {
+        toast.error("Add comment error. Please try again!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    } catch (err) {
+      console.log("err", err);
+    }
   };
 
   const handleAddProduct = () => {
@@ -277,7 +349,8 @@ const Product = () => {
                 <p className="w-[100px] h-[45px] flex items-center">US SIZE:</p>
                 <div className="flex items-center gap-[15px] hover:cursor-pointer">
                   {product?.size.map((item: any, index: number) => (
-                    <div
+                    <button
+                      disabled={item.quantity === 0}
                       key={index}
                       className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] flex justify-center items-center  ${
                         +item.quantity === 0
@@ -290,7 +363,7 @@ const Product = () => {
                       }}
                     >
                       {item.size}
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -308,39 +381,106 @@ const Product = () => {
         <div className="mb-[100px]">
           <ul className="block text-center lg:flex">
             <li
+              onClick={() => setInfo("info")}
               className={`py-[10px] px-[30px] uppercase cursor-pointer ${
-                active === 1 ? "active" : ""
+                info === "info" ? "active" : ""
               }`}
             >
               Thông tin sản phẩm
             </li>
+            <li
+              onClick={() => setInfo("comment")}
+              className={`py-[10px] px-[30px] uppercase cursor-pointer ${
+                info === "comment" ? "active" : ""
+              }`}
+            >
+              Review
+            </li>
           </ul>
           <div className="border-t border-[#e1e1e1]">
-            <div className="p-[15px]">
-              <p className="mb-[15px] text-[13px] text-[#898989]">
-                Giày thể thao nam đẹp da màu nâu cao cấp, thanh lịch từ thương
-                <br />
-                hiệu Converse® Chất liệu giày bằng da bò mềm với chi tiết mũi
-                giày
-                <br />
-                cap-toe Mắt xỏ dây âm với dây cột nylon Lót trong bằng da thoáng
-                <br />
-                khí tự nhiên Đệm lót giày bằng da bọc thoải mái và hỗ trợ chân
-                Đế
-                <br />
-                ngoài băng cao su hấp thụ sốc tốt và bám tốt trên mọi bề mặt
-                <br />
-              </p>
-              <p className="text-[13px] text-[#898989]">
-                Được thành lập vào năm 1978, thương hiệu Nine West xuất phát từ
-                địa chỉ ở thành phố New York. Trong 30 năm, Nine West đã phát
-                triển và trở thành người đứng đầu trong lĩnh vực thời trang nổi
-                tiếng thế giới. Ngày nay, giầy - túi xách - trang sức Nine West
-                được yêu mến bởi phụ nữ trên toàn thế giới và được xem như một
-                chuyên gia tư vấn đáng tin cậy trong mọi lĩnh vực thời trang,
-                bao gồm cả thời trang trẻ em
-              </p>
-            </div>
+            {info === "info" ? (
+              <>
+                <div className="p-[15px]">
+                  <p className="mb-[15px] text-[13px] text-[#898989]">
+                    Giày thể thao nam đẹp da màu nâu cao cấp, thanh lịch từ
+                    thương
+                    <br />
+                    hiệu Converse® Chất liệu giày bằng da bò mềm với chi tiết
+                    mũi giày
+                    <br />
+                    cap-toe Mắt xỏ dây âm với dây cột nylon Lót trong bằng da
+                    thoáng
+                    <br />
+                    khí tự nhiên Đệm lót giày bằng da bọc thoải mái và hỗ trợ
+                    chân Đế
+                    <br />
+                    ngoài băng cao su hấp thụ sốc tốt và bám tốt trên mọi bề mặt
+                    <br />
+                  </p>
+                  <p className="text-[13px] text-[#898989]">
+                    Được thành lập vào năm 1978, thương hiệu Nine West xuất phát
+                    từ địa chỉ ở thành phố New York. Trong 30 năm, Nine West đã
+                    phát triển và trở thành người đứng đầu trong lĩnh vực thời
+                    trang nổi tiếng thế giới. Ngày nay, giầy - túi xách - trang
+                    sức Nine West được yêu mến bởi phụ nữ trên toàn thế giới và
+                    được xem như một chuyên gia tư vấn đáng tin cậy trong mọi
+                    lĩnh vực thời trang, bao gồm cả thời trang trẻ em
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                {comments.length > 0 && (
+                  <div className="my-5 mb-[30px]">
+                    <p className="text-base">Bình luận</p>
+                  </div>
+                )}
+                {comments.map((row: any) => (
+                  <CommentItem key={row.id} row={row} />
+                ))}
+                <div className="my-5 mb-[30px]">
+                  <p className="text-base">Viết bình luận</p>
+                </div>
+                <form onSubmit={handleSubmit(handleAddComment)}>
+                  <input
+                    className="w-full p-[10px] text-[#898989] mb-[15px] outline-none border border-[#e1e1e1]"
+                    placeholder="Họ Tên"
+                    {...register("name", { required: true })}
+                  />
+                  {errors.name && (
+                    <span className="text-red-600">{errors.name?.message}</span>
+                  )}
+                  <input
+                    className="w-full p-[10px] text-[#898989] mb-[15px] outline-none border border-[#e1e1e1]"
+                    placeholder="email@gmail.com"
+                    type="email"
+                    {...register("email", { required: true })}
+                  />
+                  {errors.email && (
+                    <span className="text-red-600">
+                      {errors.email?.message}
+                    </span>
+                  )}
+                  <textarea
+                    className="w-full p-[10px] text-[#898989] mb-[15px] outline-none border border-[#e1e1e1]"
+                    placeholder="Content"
+                    rows={6}
+                    {...register("content", { required: true })}
+                  />
+                  {errors.content && (
+                    <div className="text-red-600">
+                      {errors.content?.message}
+                    </div>
+                  )}
+                  <button
+                    type="submit"
+                    className="px-[25px] bg-[#35c0c5] text-white h-10 mb-24"
+                  >
+                    Gửi bình luận
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
         <Link
@@ -350,7 +490,7 @@ const Product = () => {
           Sản phẩm liên quan
         </Link>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-[30px] mb-[30px]">
-          {_.sampleSize(product?.data).map((pItem: any, index: any) => (
+          {product?.data?.map((pItem: any, index: any) => (
             <ProductItem product={pItem} key={index} />
           ))}
         </div>

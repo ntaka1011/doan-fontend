@@ -29,6 +29,7 @@ const Category = () => {
   const { data: productNew } = getProductParams({ new: true });
   const categorySlug = String(router.query.slug);
   const { data: category } = getCategory(categorySlug);
+  console.log("🚀 ~ file: index.tsx:32 ~ Category ~ category:", category);
   const sortArray = Object.values(sort);
   const { loading, setOpenLoading, setCloseLoading } =
     useContext(LoadingContext);
@@ -44,6 +45,7 @@ const Category = () => {
     page: paginateSetup.page,
     limit: paginateSetup.page_size,
   });
+  console.log("🚀 ~ file: index.tsx:48 ~ Category ~ products:", products);
   useEffect(() => {
     loadingData;
   }, [products]);

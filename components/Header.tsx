@@ -22,7 +22,7 @@ const Header = () => {
   const [clientRendered, setClientRendered] = useState(false);
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
-  console.log("🚀 ~ file: Header.tsx:25 ~ Header ~ cartItems:", cartItems)
+  console.log("🚀 ~ file: Header.tsx:25 ~ Header ~ cartItems:", cartItems);
 
   useEffect(() => {
     setClientRendered(true);
@@ -132,7 +132,7 @@ const Header = () => {
                         <div className="flex ">
                           <div className="inline-block w-auto cursor-pointer ">
                             <img
-                              src="/images/product1.jpeg"
+                              src={item?.cartItem?.images[0]}
                               alt="product"
                               className="min-w-[85px] max-h-[95px] object-cover object-center"
                             />
@@ -173,7 +173,10 @@ const Header = () => {
                           </span>
                         </div>
                         <div className="py-[15px] leading-10">
-                          <button className="bg-[#35c0c5] w-full uppercase text-white font-bold border border-[#35c0c5] hover:bg-white hover:text-[#35c0c5]">
+                          <button
+                            onClick={() => router.push("/cart")}
+                            className="bg-[#35c0c5] w-full uppercase text-white font-bold border border-[#35c0c5] hover:bg-white hover:text-[#35c0c5]"
+                          >
                             Tiến hành thanh toán
                           </button>
                         </div>
@@ -201,7 +204,7 @@ const Header = () => {
           </Link>
         </div>
       </Wrapper>
-    </header >
+    </header>
   );
 };
 

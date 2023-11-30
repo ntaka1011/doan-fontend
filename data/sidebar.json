@@ -1,28 +1,28 @@
 [
   {
     "id": "1",
-    "title": "Converes",
-    "slug":"giay-converes",
+    "title": "Converse",
+    "slug":"giay-converse",
     "childrens": [
       {
         "id": "1",
         "title": "Giày Converse chuck",
-        "slug":"giay-converes-chuck"
+        "slug":"giay-converse-chuck"
       },
       {
         "id": "2",
         "title": "Giày Converse classic",
-        "slug":"giay-converes-classic"
+        "slug":"giay-converse-classic"
       },
       {
         "id": "3",
         "title": "Giày Converse cao cổ",
-        "slug":"giay-converes-cao-co"
+        "slug":"giay-converse-cao-co"
       },
       {
         "id": "4",
         "title": "Giày Converse thấp cổ",
-        "slug":"giay-converes-thap-co"
+        "slug":"giay-converse-thap-co"
       }
     ]
   },
@@ -71,7 +71,7 @@
       {
         "id": "3",
         "title": "Giày tập luyện đa năng",
-        "slug": "giay-tap-luyen-da-năng"
+        "slug": "giay-tap-luyen-da-nang"
       },
       {
         "id": "4",
@@ -131,33 +131,6 @@
         "id": "4",
         "title": "Giày pump loafer",
         "slug": "giay-pump-loafer"
-      }
-    ]
-  },
-  {
-    "id": "6",
-    "title": "Giày sandal",
-    "slug": "giay-sandal",
-    "childrens": [
-      {
-        "id": "1",
-        "title": "Giày sandal shat",
-        "slug": "giay-sandal-shat"
-      },
-      {
-        "id": "2",
-        "title": "Giày sandal adidas",
-        "slug": "giay-sandal-adidas"
-      },
-      {
-        "id": "3",
-        "title": "Giày sandal 3 quai",
-        "slug": "giay-sandal-3-quai"
-      },
-      {
-        "id": "4",
-        "title": "Giày sandal bitis",
-        "slug": "giay-sandal-bitis"
       }
     ]
   }

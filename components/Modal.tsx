@@ -175,10 +175,12 @@ const Modal: React.FC<ModalProps> = ({ slug }) => {
                   <p className="text-[#35c0c5] font-bold text-[26px] leading-5 mr-[10px]">
                     {convertPrice(product?.price)}
                   </p>
-                  {product?.original_price && (
+                  {product?.original_price ? (
                     <p className="leading-5 text-[16px] text-slate-500 italic line-through ">
                       {convertPrice(product?.original_price)}
                     </p>
+                  ) : (
+                    ""
                   )}
                 </div>
                 <div className="w-full mb-[15px]">
@@ -255,17 +257,21 @@ const Modal: React.FC<ModalProps> = ({ slug }) => {
                   </p>
                   <div className="flex items-center gap-[15px] hover:cursor-pointer">
                     {product?.size.map((item: any, index: number) => (
-                      <div
+                      <button
+                        disabled={item.quantity === 0}
                         key={index}
-                        className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] border flex items-center justify-center ${active === index ? "bg-[#35c0c5]" : ""
-                          }`}
+                        className={`text-sm w-[36px] h-[38px] mx-[5px] my-[6px] flex justify-center items-center  ${
+                          +item.quantity === 0
+                            ? " cursor-not-allowed bg-black/[0.1] opacity-70"
+                            : `border ${active === index ? "bg-[#35c0c5]" : ""}`
+                        }`}
                         onClick={() => {
                           setSelectSize(item?.size);
                           updateActive(index);
                         }}
                       >
                         {item.size}
-                      </div>
+                      </button>
                     ))}
                   </div>
                   <div className="mt-[15px] mb-[50px]">

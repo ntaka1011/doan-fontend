@@ -23,7 +23,11 @@ export default function Home() {
       </Head>
 
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/slider_1.webp" alt="slider" className="mb-[30px]" />
+      <img
+        src="https://argentobourbon.com/cdn/shop/files/Deportivos.png?v=1675700549&width=2400"
+        alt="slider"
+        className="mb-[30px]"
+      />
       {/* lg */}
       <Wrapper className="hidden md:hidden lg:flex gap-[30px] ">
         <div className="w-[25%]">

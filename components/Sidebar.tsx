@@ -20,7 +20,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     loadData();
-  }, [products]);
+  }, []);
 
   const loadData = async () => {
     try {

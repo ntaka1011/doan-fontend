@@ -34,7 +34,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
             className=" py-[10px] pl-[25px] pr-4 flex items-center gap-[10px] text-[#898989] text-[13px]  hover:text-[#35c0c5] hover:cursor-pointer"
           >
             <AiFillStar />
-            <Link href={`/category`}>{child.title}</Link>
+            <Link href={`/category/${child.slug}`}>{child.title}</Link>
           </div>
         ))}
       </div>

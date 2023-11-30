@@ -62,28 +62,17 @@ const subMenuData = [
       { id: 4, name: "Giày pump loafer", slug: "giay-pump-loafer" },
     ],
   },
-  {
-    id: 6,
-    name: "Giày sandal",
-    slug: "giay-sandal",
-    itemSub: [
-      { id: 1, name: "Giày sandal shat", slug: "giay-sandal-shat" },
-      { id: 2, name: "Giày sandal adidas", slug: "giay-sandal-adidas" },
-      { id: 3, name: "Giày sandal 3 quai", slug: "giay-sandal-3-quai" },
-      { id: 4, name: "Giày sandal bitis", slug: "giay-sandal-bitis" },
-    ],
-  },
 ];
 
 const Navbar = () => {
-  const [search, setSearch] = useState("")
-  const router = useRouter()
+  const [search, setSearch] = useState("");
+  const router = useRouter();
   const handleSearch = () => {
     router.push({
       pathname: "/search",
       query: { keyword: search },
     });
-    setSearch("")
+    setSearch("");
   };
   const handleSearchKeyUp = (e: any) => {
     if (e.keyCode === 13) {
@@ -91,7 +80,7 @@ const Navbar = () => {
         pathname: "/search",
         query: { keyword: search },
       });
-      setSearch("")
+      setSearch("");
     }
   };
   return (
@@ -175,7 +164,10 @@ const Navbar = () => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
-                  <div onClick={handleSearch} className="pl-5 cursor-pointer z-20">
+                  <div
+                    onClick={handleSearch}
+                    className="pl-5 cursor-pointer z-20"
+                  >
                     <FaSearch />
                   </div>
                 </div>
